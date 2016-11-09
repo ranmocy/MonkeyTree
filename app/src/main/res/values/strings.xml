@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Monkey Tree</string>
+    <string name="main_description">
+        Latin contacts: Phonetic names will be cleared.\n
+        Chinese contacts: Phonetic names will be pinyin.\n
+    </string>
+    <string name="btn_fix_latin">Fix Latin contacts</string>
+    <string name="btn_fix_chinese">Fix Chinese contacts</string>
+</resources>
