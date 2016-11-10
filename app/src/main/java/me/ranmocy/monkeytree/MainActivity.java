@@ -14,11 +14,10 @@ import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 public final class MainActivity extends AppCompatActivity
-        implements MainFragment.OnActionSelected, ContactSelectFragment.OnContactsConfirmed {
+        implements InstructionFragment.OnActionSelected, ContactSelectFragment.OnContactsConfirmed {
 
     private static final String TAG = "MainActivity";
     private static final int PERMISSIONS_REQUEST = 0;
@@ -119,7 +118,7 @@ public final class MainActivity extends AppCompatActivity
     private void initUI() {
         Log.i(TAG, "ALl permissions are granted. Init UI.");
         getSupportFragmentManager().beginTransaction()
-                .replace(android.R.id.content, MainFragment.create())
+                .replace(android.R.id.content, InstructionFragment.create())
                 .commit();
     }
 
@@ -158,6 +157,8 @@ public final class MainActivity extends AppCompatActivity
             default:
                 throw new RuntimeException("Unknown action:" + action);
         }
-        while (getSupportFragmentManager().popBackStackImmediate()) {}
+        while (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStackImmediate();
+        }
     }
 }

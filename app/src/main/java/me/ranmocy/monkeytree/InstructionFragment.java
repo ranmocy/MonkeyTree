@@ -13,24 +13,20 @@ import android.widget.Toast;
 
 /**
  * Fragment contains the main layout.
- *
+ * <p>
  * <p>Activities containing this fragment MUST implement {@link OnActionSelected}.</p>
  */
-public final class MainFragment extends Fragment implements View.OnClickListener {
+public final class InstructionFragment extends Fragment implements View.OnClickListener {
 
-    private static final String TAG = "MainFragment";
+    private static final String TAG = "InstructionFragment";
 
     public interface OnActionSelected {
-        enum Action {
-            FIX_LATIN_CONTACTS,
-            FIX_CHINESE_CONTACTS
-        }
 
         void onActionSelected(Action action);
     }
 
-    public static MainFragment create() {
-        return new MainFragment();
+    public static InstructionFragment create() {
+        return new InstructionFragment();
     }
 
     private OnActionSelected callback;
@@ -43,7 +39,7 @@ public final class MainFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
         rootView.findViewById(R.id.btn_fix_latin).setOnClickListener(this);
         rootView.findViewById(R.id.btn_fix_chinese).setOnClickListener(this);
         return rootView;
@@ -60,10 +56,10 @@ public final class MainFragment extends Fragment implements View.OnClickListener
         try {
             switch (v.getId()) {
                 case R.id.btn_fix_latin:
-                    callback.onActionSelected(OnActionSelected.Action.FIX_LATIN_CONTACTS);
+                    callback.onActionSelected(Action.FIX_LATIN_CONTACTS);
                     break;
                 case R.id.btn_fix_chinese:
-                    callback.onActionSelected(OnActionSelected.Action.FIX_CHINESE_CONTACTS);
+                    callback.onActionSelected(Action.FIX_CHINESE_CONTACTS);
                     break;
             }
         } catch (IllegalArgumentException e) {

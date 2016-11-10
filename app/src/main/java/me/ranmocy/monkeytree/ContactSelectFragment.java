@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Set;
 
-import me.ranmocy.monkeytree.MainFragment.OnActionSelected.Action;
-
 /**
  * A fragment representing a list of contacts.
  * <p>

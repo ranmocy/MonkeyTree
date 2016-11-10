@@ -8,7 +8,7 @@
     <string name="latin_fixed">Latin contacts are fixed!</string>
     <string name="chinese_fixed">Chinese contacts are fixed!</string>
 
-    <!-- MainFragment -->
+    <!-- InstructionFragment -->
     <string name="main_description">
         Latin contacts: Phonetic names will be cleared.\nChinese contacts: Phonetic names will be pinyin.
     </string>
