@@ -1,7 +1,10 @@
 package me.ranmocy.monkeytree;
 
+import android.Manifest;
 import android.content.ContentProviderOperation;
+import android.content.DialogInterface;
 import android.content.OperationApplicationException;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -9,7 +12,11 @@ import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.StructuredName;
 import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.PhoneticNameStyle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -20,26 +27,95 @@ import com.ibm.icu.text.Transliterator;
 
 import java.lang.Character.UnicodeScript;
 import java.util.ArrayList;
-import java.util.Enumeration;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity";
+    private static final int PERMISSIONS_REQUEST = 0;
+    private static final List<String> REQUIRED_PERMISSIONS = Arrays.asList(
+            Manifest.permission.READ_CONTACTS,
+            Manifest.permission.WRITE_CONTACTS);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        printAllAvailableTransliteratorIds();
+
+        if (checkPermission()) {
+            initUi();
+        } else {
+            if (shouldShowPermissionRationale()) {
+                showDialogToExplainPermission();
+            } else {
+                requestPermissions();
+            }
+        }
     }
 
-    private void printAllAvailableTransliteratorIds() {
-        Enumeration<String> availableIDs = Transliterator.getAvailableIDs();
-        while (availableIDs.hasMoreElements()) {
-            Log.v(TAG, "Trans:" + availableIDs.nextElement());
+    private boolean checkPermission() {
+        for (String permission : REQUIRED_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(this, permission)
+                    != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
         }
+        return true;
+    }
+
+    private boolean shouldShowPermissionRationale() {
+        for (String permission : REQUIRED_PERMISSIONS) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(
+                this,
+                REQUIRED_PERMISSIONS.toArray(new String[REQUIRED_PERMISSIONS.size()]),
+                PERMISSIONS_REQUEST);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (PERMISSIONS_REQUEST == requestCode) {
+            if (grantResults.length < permissions.length) {
+                showDialogToExplainPermission();
+            } else {
+                initUi();
+            }
+        }
+    }
+
+    private void showDialogToExplainPermission() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.dialog_permission_message)
+                .setCancelable(false)
+                .setPositiveButton(R.string.btn_retry, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        requestPermissions();
+                    }
+                })
+                .setNegativeButton(R.string.btn_quit, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        setResult(RESULT_CANCELED);
+                        finish();
+                    }
+                })
+                .show();
+    }
+
+    private void initUi() {
+        setContentView(R.layout.activity_main);
     }
 
     @Override
