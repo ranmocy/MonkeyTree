@@ -14,7 +14,7 @@ import android.util.Log;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainFragment.OnActionSelected {
 
     private static final String TAG = "MainActivity";
     private static final int PERMISSIONS_REQUEST = 0;
@@ -111,6 +111,14 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "ALl permissions are granted. Init UI.");
         getSupportFragmentManager().beginTransaction()
                 .replace(android.R.id.content, MainFragment.create())
+                .commit();
+    }
+
+    @Override
+    public void onActionSelected() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(android.R.id.content, ContactSelectFragment.create())
+                .addToBackStack()
                 .commit();
     }
 }

@@ -19,6 +19,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "MainFragment";
 
+    public interface OnActionSelected {
+        void onActionSelected();
+    }
+
     public static MainFragment create() {
         return new MainFragment();
     }

@@ -25,9 +25,10 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile 'com.android.support:appcompat-v7:25.0.0'
     // https://mvnrepository.com/artifact/com.ibm.icu/icu4j
     compile group: 'com.ibm.icu', name: 'icu4j', version: '51.1'
 
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:recyclerview-v7:25.0.0'
     testCompile 'junit:junit:4.12'
 }
