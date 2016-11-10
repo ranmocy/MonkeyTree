@@ -138,23 +138,6 @@ final class ContactFixer {
         return result;
     }
 
-    private static final class ContactLite {
-
-        private final int dataId;
-        private final String displayName;
-        private final String givenName;
-        private final String middleName;
-        private final String familyName;
-
-        private ContactLite(int dataId, String displayName, String givenName, String middleName, String familyName) {
-            this.dataId = dataId;
-            this.displayName = displayName;
-            this.givenName = givenName;
-            this.middleName = middleName;
-            this.familyName = familyName;
-        }
-    }
-
     private interface ContactFilter {
         boolean shouldKeep(ContactLite contact);
     }
