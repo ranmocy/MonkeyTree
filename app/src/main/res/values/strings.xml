@@ -1,12 +1,17 @@
 <resources>
     <string name="app_name">Monkey Tree</string>
+
+    <!-- MainActivity -->
+    <string name="dialog_permission_message">We are going to fix contacts, so we need contact permissions, right?</string>
+    <string name="btn_retry">Grant permissions</string>
+    <string name="btn_quit">Quit apps</string>
+
+    <!-- MainFragment -->
     <string name="main_description">
         Latin contacts: Phonetic names will be cleared.\n
         Chinese contacts: Phonetic names will be pinyin.\n
     </string>
     <string name="btn_fix_latin">Fix Latin contacts</string>
     <string name="btn_fix_chinese">Fix Chinese contacts</string>
-    <string name="dialog_permission_message">We are going to fix contacts, so we need contact permissions, right?</string>
-    <string name="btn_retry">Grant permissions</string>
-    <string name="btn_quit">Quit apps</string>
+    <string name="toast_data_missing_message">Transliterator data is missing, can not process</string>
 </resources>
