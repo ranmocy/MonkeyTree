@@ -1,6 +1,7 @@
 package me.ranmocy.monkeytree;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,30 +10,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.Set;
-
 
 /**
  * Fragment contains the main layout.
+ *
+ * <p>Activities containing this fragment MUST implement {@link OnActionSelected}.</p>
  */
-public class MainFragment extends Fragment implements View.OnClickListener {
+public final class MainFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "MainFragment";
 
     public interface OnActionSelected {
-        void onActionSelected();
+        enum Action {
+            FIX_LATIN_CONTACTS,
+            FIX_CHINESE_CONTACTS
+        }
+
+        void onActionSelected(Action action);
     }
 
     public static MainFragment create() {
         return new MainFragment();
     }
 
-    private ContactFixer contactFixer;
+    private OnActionSelected callback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        contactFixer = new ContactFixer(getContext());
     }
 
     @Override
@@ -45,16 +50,20 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        callback = (OnActionSelected) context;
+    }
+
+    @Override
     public void onClick(View v) {
         try {
             switch (v.getId()) {
                 case R.id.btn_fix_latin:
-                    Set<ContactLite> latinContactData = contactFixer.getLatinContactData();
-                    contactFixer.fixLatinContacts(latinContactData);
+                    callback.onActionSelected(OnActionSelected.Action.FIX_LATIN_CONTACTS);
                     break;
                 case R.id.btn_fix_chinese:
-                    Set<ContactLite> chineseContactData = contactFixer.getChineseContactData();
-                    contactFixer.fixChineseContacts(chineseContactData);
+                    callback.onActionSelected(OnActionSelected.Action.FIX_CHINESE_CONTACTS);
                     break;
             }
         } catch (IllegalArgumentException e) {

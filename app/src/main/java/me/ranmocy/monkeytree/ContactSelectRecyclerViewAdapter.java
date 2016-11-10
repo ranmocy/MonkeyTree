@@ -1,29 +1,33 @@
 package me.ranmocy.monkeytree;
 
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import me.ranmocy.monkeytree.ContactSelectFragment.OnListFragmentInteractionListener;
-import me.ranmocy.monkeytree.dummy.DummyContent.DummyItem;
-
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
+ * A {@link RecyclerView.Adapter} that can display a list of {@link ContactLite}.
  */
-class ContactSelectRecyclerViewAdapter extends RecyclerView.Adapter<ContactSelectRecyclerViewAdapter.ViewHolder> {
+final class ContactSelectRecyclerViewAdapter
+        extends RecyclerView.Adapter<ContactSelectRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final ArrayList<ContactLite> contacts;
+    private final Map<ContactLite, Boolean> selected;
 
-    ContactSelectRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
-        mListener = listener;
+    ContactSelectRecyclerViewAdapter(ArrayList<ContactLite> contacts) {
+        this.contacts = contacts;
+        this.selected = new HashMap<>(contacts.size());
+        for (ContactLite contact : contacts) {
+            this.selected.put(contact, true);
+        }
     }
 
     @Override
@@ -35,43 +39,55 @@ class ContactSelectRecyclerViewAdapter extends RecyclerView.Adapter<ContactSelec
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.contact = contacts.get(position);
+        holder.givenNameView.setText(holder.contact.givenName);
+        holder.middleNameView.setText(holder.contact.middleName);
+        holder.familyNameView.setText(holder.contact.familyName);
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
+                holder.checkBox.setSelected(!holder.checkBox.isSelected());
+                selected.put(holder.contact, holder.checkBox.isSelected());
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return contacts.size();
+    }
+
+    Set<ContactLite> getSelectedContacts() {
+        HashSet<ContactLite> selectedContacts = new HashSet<>();
+        for (Map.Entry<ContactLite, Boolean> entry : selected.entrySet()) {
+            if (entry.getValue()) {
+                selectedContacts.add(entry.getKey());
+            }
+        }
+        return selectedContacts;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private final View mView;
-        private final TextView mIdView;
-        private final TextView mContentView;
-        private DummyItem mItem;
+        private final View view;
+        private final AppCompatCheckBox checkBox;
+        private final TextView givenNameView;
+        private final TextView middleNameView;
+        private final TextView familyNameView;
+        private ContactLite contact;
 
         private ViewHolder(View view) {
             super(view);
-            mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            this.view = view;
+            this.checkBox = (AppCompatCheckBox) view.findViewById(R.id.contact_checkbox);
+            this.givenNameView = (TextView) view.findViewById(R.id.contact_given_name);
+            this.middleNameView = (TextView) view.findViewById(R.id.contact_middle_name);
+            this.familyNameView = (TextView) view.findViewById(R.id.contact_family_name);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + middleNameView.getText() + "'";
         }
     }
 }

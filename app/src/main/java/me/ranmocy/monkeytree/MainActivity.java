@@ -10,11 +10,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
-public class MainActivity extends AppCompatActivity implements MainFragment.OnActionSelected {
+public final class MainActivity extends AppCompatActivity
+        implements MainFragment.OnActionSelected, ContactSelectFragment.OnContactsConfirmed {
 
     private static final String TAG = "MainActivity";
     private static final int PERMISSIONS_REQUEST = 0;
@@ -22,9 +26,14 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnAc
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.WRITE_CONTACTS);
 
+    private ContactFixer contactFixer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        contactFixer = new ContactFixer(this);
+
 
         if (checkPermission()) {
             initUI();
@@ -115,10 +124,40 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnAc
     }
 
     @Override
-    public void onActionSelected() {
+    public void onActionSelected(Action action) {
+        Set<ContactLite> contacts;
+        switch (action) {
+            case FIX_LATIN_CONTACTS:
+                contacts = contactFixer.getLatinContactData();
+                break;
+            case FIX_CHINESE_CONTACTS:
+                contacts = contactFixer.getChineseContactData();
+                break;
+            default:
+                throw new RuntimeException("Unknown action:" + action);
+        }
+
         getSupportFragmentManager().beginTransaction()
-                .replace(android.R.id.content, ContactSelectFragment.create())
-                .addToBackStack()
+                .replace(android.R.id.content, ContactSelectFragment.create(action, contacts))
+                .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void onContactsConfirmed(Action action, Set<ContactLite> contacts) {
+        Log.i(TAG, String.format("Confirmed to fix %d contacts", contacts.size()));
+        switch (action) {
+            case FIX_LATIN_CONTACTS:
+                contactFixer.fixLatinContacts(contacts);
+                Toast.makeText(this, R.string.latin_fixed, Toast.LENGTH_SHORT).show();
+                break;
+            case FIX_CHINESE_CONTACTS:
+                contactFixer.fixChineseContacts(contacts);
+                Toast.makeText(this, R.string.chinese_fixed, Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                throw new RuntimeException("Unknown action:" + action);
+        }
+        while (getSupportFragmentManager().popBackStackImmediate()) {}
     }
 }

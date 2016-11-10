@@ -2,7 +2,7 @@ package me.ranmocy.monkeytree;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,96 +10,82 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import me.ranmocy.monkeytree.dummy.DummyContent;
-import me.ranmocy.monkeytree.dummy.DummyContent.DummyItem;
+import java.util.ArrayList;
+import java.util.Set;
+
+import me.ranmocy.monkeytree.MainFragment.OnActionSelected.Action;
 
 /**
  * A fragment representing a list of contacts.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
+ * <p>
+ * <p>Activities containing this fragment MUST implement {@link OnContactsConfirmed}.</p>
  */
-public class ContactSelectFragment extends Fragment {
+public final class ContactSelectFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private static final String ARG_ACTION = "arg_action";
+    private static final String ARG_CONTACTS = "arg_contacts";
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public ContactSelectFragment() {
+    public interface OnContactsConfirmed {
+        void onContactsConfirmed(Action action, Set<ContactLite> contacts);
     }
 
-    public static ContactSelectFragment create(int columnCount) {
+    public static ContactSelectFragment create(Action action, Set<ContactLite> contacts) {
         ContactSelectFragment fragment = new ContactSelectFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putSerializable(ARG_ACTION, action);
+        args.putParcelableArrayList(ARG_CONTACTS, new ArrayList<>(contacts));
         fragment.setArguments(args);
         return fragment;
     }
+
+    private Action action;
+    private ArrayList<ContactLite> contacts = new ArrayList<>();
+    private ContactSelectRecyclerViewAdapter adapter;
+    private OnContactsConfirmed callback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            action = (Action) getArguments().getSerializable(ARG_ACTION);
+            contacts = getArguments().getParcelableArrayList(ARG_CONTACTS);
+            adapter = new ContactSelectRecyclerViewAdapter(contacts);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_contact_select_list, container, false);
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_contact_select_list, container, false);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new ContactSelectRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_contact_list);
+        if (contacts.size() <= 1) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         }
-        return view;
+        recyclerView.setAdapter(adapter);
+
+        rootView.findViewById(R.id.btn_confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callback.onContactsConfirmed(action, adapter.getSelectedContacts());
+            }
+        });
+        return rootView;
     }
 
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
+        callback = (OnContactsConfirmed) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        callback = null;
     }
 }
