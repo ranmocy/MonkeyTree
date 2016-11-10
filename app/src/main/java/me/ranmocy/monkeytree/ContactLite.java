@@ -13,17 +13,29 @@ final class ContactLite implements Parcelable{
     final String givenName;
     final String middleName;
     final String familyName;
+    final String phoneticGivenName;
+    final String phoneticMiddleName;
+    final String phoneticFamilyName;
+    final int phoneticNameStyle;
 
     ContactLite(int dataId,
                 String displayName,
                 String givenName,
                 String middleName,
-                String familyName) {
+                String familyName,
+                String phoneticGivenName,
+                String phoneticMiddleName,
+                String phoneticFamilyName,
+                int phoneticNameStyle) {
         this.dataId = dataId;
         this.displayName = displayName;
         this.givenName = givenName;
         this.middleName = middleName;
         this.familyName = familyName;
+        this.phoneticGivenName = phoneticGivenName;
+        this.phoneticMiddleName = phoneticMiddleName;
+        this.phoneticFamilyName = phoneticFamilyName;
+        this.phoneticNameStyle = phoneticNameStyle;
     }
 
     private ContactLite(Parcel in) {
@@ -32,6 +44,28 @@ final class ContactLite implements Parcelable{
         this.givenName = in.readString();
         this.middleName = in.readString();
         this.familyName = in.readString();
+        this.phoneticGivenName = in.readString();
+        this.phoneticMiddleName = in.readString();
+        this.phoneticFamilyName = in.readString();
+        this.phoneticNameStyle = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(dataId);
+        parcel.writeString(displayName);
+        parcel.writeString(givenName);
+        parcel.writeString(middleName);
+        parcel.writeString(familyName);
+        parcel.writeString(phoneticGivenName);
+        parcel.writeString(phoneticMiddleName);
+        parcel.writeString(phoneticFamilyName);
+        parcel.writeInt(phoneticNameStyle);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<ContactLite> CREATOR = new Creator<ContactLite>() {
@@ -45,18 +79,4 @@ final class ContactLite implements Parcelable{
             return new ContactLite[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(dataId);
-        parcel.writeString(displayName);
-        parcel.writeString(givenName);
-        parcel.writeString(middleName);
-        parcel.writeString(familyName);
-    }
 }

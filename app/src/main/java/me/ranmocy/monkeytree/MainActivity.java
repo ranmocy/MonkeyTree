@@ -147,11 +147,11 @@ public final class MainActivity extends AppCompatActivity
         Log.i(TAG, String.format("Confirmed to fix %d contacts", contacts.size()));
         switch (action) {
             case FIX_LATIN_CONTACTS:
-                contactFixer.fixLatinContacts(contacts);
+                contactFixer.fixContactPhonetic(contacts);
                 Toast.makeText(this, R.string.latin_fixed, Toast.LENGTH_SHORT).show();
                 break;
             case FIX_CHINESE_CONTACTS:
-                contactFixer.fixChineseContacts(contacts);
+                contactFixer.fixContactPhonetic(contacts);
                 Toast.makeText(this, R.string.chinese_fixed, Toast.LENGTH_SHORT).show();
                 break;
             default:
