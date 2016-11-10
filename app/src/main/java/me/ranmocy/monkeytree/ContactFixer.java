@@ -13,6 +13,7 @@ import com.ibm.icu.text.Replaceable;
 import com.ibm.icu.text.Transliterator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,26 +30,32 @@ final class ContactFixer {
         this.context = context;
     }
 
-    void fixLatinContacts() {
-        fixContactPhonetic(getContactData(new ContactFilter() {
+    Set<ContactLite> getLatinContactData() {
+        return getContactData(new ContactFilter() {
             @Override
             public boolean shouldKeep(ContactLite contact) {
                 int codePoint = contact.displayName.codePointAt(0);
-                Character.UnicodeScript script = Character.UnicodeScript.of(codePoint);
-                Log.i(TAG, String.format("Unicode:%s:%s:%s", contact.displayName, script, codePoint));
-                return script == Character.UnicodeScript.LATIN;
+                return Character.UnicodeScript.of(codePoint) == Character.UnicodeScript.LATIN;
             }
-        }), new NullTransliterator(), ContactsContract.PhoneticNameStyle.UNDEFINED);
+        });
     }
 
-    void fixChineseContacts() {
-        fixContactPhonetic(getContactData(new ContactFilter() {
+    void fixLatinContacts(Set<ContactLite> contactData) {
+        fixContactPhonetic(contactData, new NullTransliterator(), ContactsContract.PhoneticNameStyle.UNDEFINED);
+    }
+
+    Set<ContactLite> getChineseContactData() {
+        return getContactData(new ContactFilter() {
             @Override
             public boolean shouldKeep(ContactLite contact) {
                 Character.UnicodeScript script = Character.UnicodeScript.of(contact.displayName.codePointAt(0));
                 return script == Character.UnicodeScript.HAN;
             }
-        }), Transliterator.getInstance("Han-Latin/Names"), ContactsContract.PhoneticNameStyle.PINYIN);
+        });
+    }
+
+    void fixChineseContacts(Set<ContactLite> contactData) {
+        fixContactPhonetic(contactData, Transliterator.getInstance("Han-Latin/Names"), ContactsContract.PhoneticNameStyle.PINYIN);
     }
 
     private Set<ContactLite> getContactData(ContactFilter contactFilter) {
@@ -142,12 +149,9 @@ final class ContactFixer {
         boolean shouldKeep(ContactLite contact);
     }
 
+    /** NullTransliterator will change any string into empty string. */
     private static final class NullTransliterator extends Transliterator {
 
-        /**
-         * NullTransliterator will change any string into empty string.
-         * ICU 2.0
-         */
         NullTransliterator() {
             super("Any-Null", null /*filter*/);
         }

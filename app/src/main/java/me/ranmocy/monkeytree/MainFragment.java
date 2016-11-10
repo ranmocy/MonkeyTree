@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.Set;
+
 
 /**
  * Fragment contains the main layout.
@@ -43,10 +45,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         try {
             switch (v.getId()) {
                 case R.id.btn_fix_latin:
-                    contactFixer.fixLatinContacts();
+                    Set<ContactLite> latinContactData = contactFixer.getLatinContactData();
+                    contactFixer.fixLatinContacts(latinContactData);
                     break;
                 case R.id.btn_fix_chinese:
-                    contactFixer.fixChineseContacts();
+                    Set<ContactLite> chineseContactData = contactFixer.getChineseContactData();
+                    contactFixer.fixChineseContacts(chineseContactData);
                     break;
             }
         } catch (IllegalArgumentException e) {
