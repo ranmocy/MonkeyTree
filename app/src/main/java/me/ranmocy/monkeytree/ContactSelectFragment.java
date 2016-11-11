@@ -37,7 +37,6 @@ public final class ContactSelectFragment extends Fragment {
     }
 
     private Action action;
-    private ArrayList<ContactLite> contacts = new ArrayList<>();
     private ContactSelectRecyclerViewAdapter adapter;
     private OnContactsConfirmed callback;
 
@@ -47,7 +46,7 @@ public final class ContactSelectFragment extends Fragment {
 
         if (getArguments() != null) {
             action = (Action) getArguments().getSerializable(ARG_ACTION);
-            contacts = getArguments().getParcelableArrayList(ARG_CONTACTS);
+            ArrayList<ContactLite> contacts = getArguments().getParcelableArrayList(ARG_CONTACTS);
             adapter = new ContactSelectRecyclerViewAdapter(contacts);
         }
     }
