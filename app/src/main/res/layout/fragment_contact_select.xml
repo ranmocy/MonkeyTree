@@ -4,19 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_vertical"
     android:orientation="horizontal">
 
     <android.support.v7.widget.AppCompatCheckBox
         android:id="@+id/contact_checkbox"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"/>
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/contact_given_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
         android:layout_margin="@dimen/contact_name_margin"
         android:textAppearance="?attr/textAppearanceListItem"
         tools:text="Given"/>
@@ -25,7 +24,6 @@
         android:id="@+id/contact_middle_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
         android:layout_margin="@dimen/contact_name_margin"
         android:textAppearance="?attr/textAppearanceListItem"
         tools:text="Middle"/>
@@ -34,8 +32,38 @@
         android:id="@+id/contact_family_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
         android:layout_margin="@dimen/contact_name_margin"
         android:textAppearance="?attr/textAppearanceListItem"
         tools:text="Family"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/contact_name_margin"
+        android:text="@string/contact_divider" />
+
+    <TextView
+        android:id="@+id/contact_phonetic_given_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/contact_name_margin"
+        android:textAppearance="?attr/textAppearanceListItem"
+        tools:text="Given"/>
+
+    <TextView
+        android:id="@+id/contact_phonetic_middle_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/contact_name_margin"
+        android:textAppearance="?attr/textAppearanceListItem"
+        tools:text="Middle"/>
+
+    <TextView
+        android:id="@+id/contact_phonetic_family_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/contact_name_margin"
+        android:textAppearance="?attr/textAppearanceListItem"
+        tools:text="Family"/>
+
 </LinearLayout>

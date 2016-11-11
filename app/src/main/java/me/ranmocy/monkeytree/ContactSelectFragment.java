@@ -58,11 +58,6 @@ public final class ContactSelectFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_contact_select_list, container, false);
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_contact_list);
-        if (contacts.size() <= 1) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
-        }
         recyclerView.setAdapter(adapter);
 
         rootView.findViewById(R.id.btn_confirm).setOnClickListener(new View.OnClickListener() {

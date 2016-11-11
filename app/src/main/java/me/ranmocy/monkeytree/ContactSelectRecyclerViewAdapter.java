@@ -40,9 +40,13 @@ final class ContactSelectRecyclerViewAdapter
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.contact = contacts.get(position);
+        holder.checkBox.setChecked(selected.get(holder.contact));
         holder.givenNameView.setText(holder.contact.givenName);
         holder.middleNameView.setText(holder.contact.middleName);
         holder.familyNameView.setText(holder.contact.familyName);
+        holder.phoneticGivenNameView.setText(holder.contact.phoneticGivenName);
+        holder.phoneticMiddleNameView.setText(holder.contact.phoneticMiddleName);
+        holder.phoneticFamilyNameView.setText(holder.contact.phoneticFamilyName);
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +78,9 @@ final class ContactSelectRecyclerViewAdapter
         private final TextView givenNameView;
         private final TextView middleNameView;
         private final TextView familyNameView;
+        private final TextView phoneticGivenNameView;
+        private final TextView phoneticMiddleNameView;
+        private final TextView phoneticFamilyNameView;
         private ContactLite contact;
 
         private ViewHolder(View view) {
@@ -83,6 +90,9 @@ final class ContactSelectRecyclerViewAdapter
             this.givenNameView = (TextView) view.findViewById(R.id.contact_given_name);
             this.middleNameView = (TextView) view.findViewById(R.id.contact_middle_name);
             this.familyNameView = (TextView) view.findViewById(R.id.contact_family_name);
+            this.phoneticGivenNameView = (TextView) view.findViewById(R.id.contact_phonetic_given_name);
+            this.phoneticMiddleNameView = (TextView) view.findViewById(R.id.contact_phonetic_middle_name);
+            this.phoneticFamilyNameView = (TextView) view.findViewById(R.id.contact_phonetic_family_name);
         }
 
         @Override
