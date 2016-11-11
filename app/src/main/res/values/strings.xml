@@ -7,6 +7,8 @@
     <string name="btn_quit">Quit apps</string>
     <string name="latin_fixed">Latin contacts are fixed!</string>
     <string name="chinese_fixed">Chinese contacts are fixed!</string>
+    <string name="dialog_reading">Reading contacts…</string>
+    <string name="dialog_fixing">Fixing contacts…</string>
 
     <!-- InstructionFragment -->
     <string name="main_description">

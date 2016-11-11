@@ -3,6 +3,7 @@ package me.ranmocy.monkeytree;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -123,42 +124,86 @@ public final class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onActionSelected(Action action) {
-        Set<ContactLite> contacts;
-        switch (action) {
-            case FIX_LATIN_CONTACTS:
-                contacts = contactFixer.getLatinContactData();
-                break;
-            case FIX_CHINESE_CONTACTS:
-                contacts = contactFixer.getChineseContactData();
-                break;
-            default:
-                throw new RuntimeException("Unknown action:" + action);
-        }
+    public void onActionSelected(final Action action) {
+        final AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setMessage(R.string.dialog_reading)
+                .setCancelable(false)
+                .show();
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(android.R.id.content, ContactSelectFragment.create(action, contacts))
-                .addToBackStack(null)
-                .commit();
+        new AsyncTask<Void, Void, Set<ContactLite>>() {
+            @Override
+            protected Set<ContactLite> doInBackground(Void... voids) {
+                switch (action) {
+                    case FIX_LATIN_CONTACTS:
+                        return contactFixer.getLatinContactData();
+                    case FIX_CHINESE_CONTACTS:
+                        return contactFixer.getChineseContactData();
+                    default:
+                        throw new RuntimeException("Unknown action:" + action);
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Set<ContactLite> contacts) {
+                super.onPostExecute(contacts);
+                Log.i(TAG, "Reading finished");
+                alertDialog.dismiss();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(android.R.id.content, ContactSelectFragment.create(action, contacts))
+                        .addToBackStack(null)
+                        .commit();
+            }
+
+            @Override
+            protected void onCancelled() {
+                super.onCancelled();
+                Log.i(TAG, "Reading cancelled");
+                alertDialog.dismiss();
+            }
+        }.execute();
     }
 
     @Override
-    public void onContactsConfirmed(Action action, Set<ContactLite> contacts) {
+    public void onContactsConfirmed(final Action action, final Set<ContactLite> contacts) {
         Log.i(TAG, String.format("Confirmed to fix %d contacts", contacts.size()));
-        switch (action) {
-            case FIX_LATIN_CONTACTS:
-                contactFixer.fixContactPhonetic(contacts);
-                Toast.makeText(this, R.string.latin_fixed, Toast.LENGTH_SHORT).show();
-                break;
-            case FIX_CHINESE_CONTACTS:
-                contactFixer.fixContactPhonetic(contacts);
-                Toast.makeText(this, R.string.chinese_fixed, Toast.LENGTH_SHORT).show();
-                break;
-            default:
-                throw new RuntimeException("Unknown action:" + action);
-        }
-        while (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            getSupportFragmentManager().popBackStackImmediate();
-        }
+
+        final AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setMessage(R.string.dialog_fixing)
+                .setCancelable(false)
+                .show();
+
+        new AsyncTask<Void, Void, Integer>() {
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                switch (action) {
+                    case FIX_LATIN_CONTACTS:
+                        contactFixer.fixContactPhonetic(contacts);
+                        return R.string.latin_fixed;
+                    case FIX_CHINESE_CONTACTS:
+                        contactFixer.fixContactPhonetic(contacts);
+                        return R.string.chinese_fixed;
+                    default:
+                        throw new RuntimeException("Unknown action:" + action);
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Integer resId) {
+                super.onPostExecute(resId);
+                Log.i(TAG, "Fixing finished");
+                alertDialog.dismiss();
+                Toast.makeText(MainActivity.this, resId, Toast.LENGTH_SHORT).show();
+                while (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    getSupportFragmentManager().popBackStackImmediate();
+                }
+            }
+
+            @Override
+            protected void onCancelled() {
+                super.onCancelled();
+                Log.i(TAG, "Fixing cancelled");
+                alertDialog.dismiss();
+            }
+        }.execute();
     }
 }
