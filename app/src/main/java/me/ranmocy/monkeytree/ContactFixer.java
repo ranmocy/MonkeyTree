@@ -4,6 +4,7 @@ import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
@@ -34,7 +35,18 @@ final class ContactFixer {
             @Override
             public boolean shouldKeep(ContactLite contact) {
                 int codePoint = contact.displayName.codePointAt(0);
-                return Character.UnicodeScript.of(codePoint) == Character.UnicodeScript.LATIN;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    return Character.UnicodeScript.of(codePoint) == Character.UnicodeScript.LATIN;
+                } else {
+                    Character.UnicodeBlock ub = Character.UnicodeBlock.of(codePoint);
+                    return ub == Character.UnicodeBlock.BASIC_LATIN
+                            || ub == Character.UnicodeBlock.LATIN_EXTENDED_A
+                            || ub == Character.UnicodeBlock.LATIN_EXTENDED_ADDITIONAL
+                            || ub == Character.UnicodeBlock.LATIN_EXTENDED_B
+                            || ub == Character.UnicodeBlock.LATIN_EXTENDED_C
+                            || ub == Character.UnicodeBlock.LATIN_EXTENDED_D
+                            || ub == Character.UnicodeBlock.LATIN_1_SUPPLEMENT;
+                }
             }
         }, new NullTransliterator(), ContactsContract.PhoneticNameStyle.UNDEFINED);
     }
@@ -43,8 +55,19 @@ final class ContactFixer {
         return getContactData(new ContactFilter() {
             @Override
             public boolean shouldKeep(ContactLite contact) {
-                Character.UnicodeScript script = Character.UnicodeScript.of(contact.displayName.codePointAt(0));
-                return script == Character.UnicodeScript.HAN;
+                int codePoint = contact.displayName.codePointAt(0);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    return Character.UnicodeScript.of(codePoint) == Character.UnicodeScript.HAN;
+                } else {
+                    Character.UnicodeBlock ub = Character.UnicodeBlock.of(codePoint);
+                    return ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
+                            || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
+                            || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_B
+                            || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_C
+                            || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_D
+                            || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
+                            || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS_SUPPLEMENT;
+                }
             }
         }, Transliterator.getInstance("Han-Latin/Names"), ContactsContract.PhoneticNameStyle.PINYIN);
     }
