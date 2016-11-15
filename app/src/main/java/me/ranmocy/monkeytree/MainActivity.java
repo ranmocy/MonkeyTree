@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -27,13 +29,16 @@ public final class MainActivity extends AppCompatActivity
             Manifest.permission.WRITE_CONTACTS);
 
     private ContactFixer contactFixer;
+    private FirebaseAnalytics firebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         contactFixer = new ContactFixer(this);
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, Bundle.EMPTY);
 
         if (checkPermission()) {
             initUI();
@@ -78,8 +83,10 @@ public final class MainActivity extends AppCompatActivity
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (PERMISSIONS_REQUEST == requestCode) {
             if (grantResults.length > 0 && allResultGranted(grantResults)) {
+                firebaseAnalytics.logEvent("PermissionGranted", Bundle.EMPTY);
                 initUI();
             } else {
+                firebaseAnalytics.logEvent("PermissionDenied", Bundle.EMPTY);
                 showDialogToExplainPermission();
             }
         }
@@ -121,6 +128,7 @@ public final class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(android.R.id.content, InstructionFragment.create())
                 .commit();
+        firebaseAnalytics.logEvent("initUI", Bundle.EMPTY);
     }
 
     @Override
@@ -152,6 +160,7 @@ public final class MainActivity extends AppCompatActivity
                         .replace(android.R.id.content, ContactSelectFragment.create(action, contacts))
                         .addToBackStack(null)
                         .commit();
+                firebaseAnalytics.logEvent("ReadingSuccess", Bundle.EMPTY);
             }
 
             @Override
@@ -159,8 +168,11 @@ public final class MainActivity extends AppCompatActivity
                 super.onCancelled();
                 Log.i(TAG, "Reading cancelled");
                 alertDialog.dismiss();
+                firebaseAnalytics.logEvent("ReadingFailed", Bundle.EMPTY);
             }
         }.execute();
+
+        firebaseAnalytics.logEvent("ActionSelected", Bundle.EMPTY);
     }
 
     @Override
@@ -196,6 +208,7 @@ public final class MainActivity extends AppCompatActivity
                 while (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     getSupportFragmentManager().popBackStackImmediate();
                 }
+                firebaseAnalytics.logEvent("FixSuccess", Bundle.EMPTY);
             }
 
             @Override
@@ -203,7 +216,10 @@ public final class MainActivity extends AppCompatActivity
                 super.onCancelled();
                 Log.i(TAG, "Fixing cancelled");
                 alertDialog.dismiss();
+                firebaseAnalytics.logEvent("FixCancelled", Bundle.EMPTY);
             }
         }.execute();
+
+        firebaseAnalytics.logEvent("ContactsConfirmed", Bundle.EMPTY);
     }
 }

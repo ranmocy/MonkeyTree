@@ -37,6 +37,7 @@ dependencies {
 
     compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.android.support:recyclerview-v7:25.0.1'
+    compile 'com.google.firebase:firebase-core:9.8.0'
     testCompile 'junit:junit:4.12'
 }
 
@@ -63,3 +64,5 @@ if (propFile.canRead()) {
     println 'signing.properties not found'
     android.buildTypes.release.signingConfig = null
 }
+
+apply plugin: 'com.google.gms.google-services'
