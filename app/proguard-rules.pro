@@ -15,3 +15,6 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# icu4j use relative path to load data files, so we need to keep this package name.
+-keeppackagenames com.ibm.icu.impl
