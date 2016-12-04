@@ -1,5 +1,9 @@
 # MonkeyTree
 
+<a href='https://play.google.com/store/apps/details?id=me.ranmocy.monkeytree'>
+  <img height="60" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/>
+</a>
+
 This app is designed to let operating system sort contacts in the right order,
 by updating phonetic names and types of your contacts.
 
