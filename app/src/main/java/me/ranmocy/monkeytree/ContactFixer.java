@@ -104,16 +104,11 @@ final class ContactFixer {
                     String phoneticMiddleName = transliterate(transliterator, middleName);
                     String phoneticFamilyName = transliterate(transliterator, familyName);
 
-                    Log.i(TAG, String.format("%s[%s|%s] : [%s|%s|%s]",
-                            displayName, givenName, familyName, phoneticGivenName, phoneticMiddleName, phoneticFamilyName));
-
                     ContactLite contactLite = new ContactLite(
                             dataId, displayName, givenName, middleName, familyName,
                             phoneticGivenName, phoneticMiddleName, phoneticFamilyName, phoneticNameStyle);
                     if (contactFilter.shouldKeep(contactLite)) {
                         contacts.add(contactLite);
-                    } else {
-                        Log.v(TAG, "skip");
                     }
                 }
             }
