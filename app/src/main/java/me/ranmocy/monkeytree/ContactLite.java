@@ -2,11 +2,14 @@ package me.ranmocy.monkeytree;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 /**
  * Lite version of a contact name.
  */
-final class ContactLite implements Parcelable{
+final class ContactLite implements Parcelable, Comparable<ContactLite> {
 
     final int dataId;
     final String displayName;
@@ -79,4 +82,22 @@ final class ContactLite implements Parcelable{
             return new ContactLite[size];
         }
     };
+
+    @Override
+    public int compareTo(@NonNull ContactLite other) {
+        return getComparativeIdentifier(this).compareTo(getComparativeIdentifier(other));
+    }
+
+    private static String getComparativeIdentifier(ContactLite contact) {
+        if (contact.phoneticNameStyle == ContactsContract.PhoneticNameStyle.PINYIN) {
+            if (!TextUtils.isEmpty(contact.phoneticFamilyName)) {
+                return contact.phoneticFamilyName;
+            }
+        } else {
+            if (!TextUtils.isEmpty(contact.givenName)) {
+                return contact.givenName;
+            }
+        }
+        return contact.displayName;
+    }
 }

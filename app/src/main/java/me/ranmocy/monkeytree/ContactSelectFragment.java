@@ -2,6 +2,7 @@ package me.ranmocy.monkeytree;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Set;
 
 /**
@@ -28,10 +31,13 @@ public final class ContactSelectFragment extends Fragment {
     }
 
     public static ContactSelectFragment create(Action action, Set<ContactLite> contacts) {
+        ArrayList<ContactLite> contactList = new ArrayList<>(contacts);
+        Collections.sort(contactList);
+
         ContactSelectFragment fragment = new ContactSelectFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_ACTION, action);
-        args.putParcelableArrayList(ARG_CONTACTS, new ArrayList<>(contacts));
+        args.putParcelableArrayList(ARG_CONTACTS, contactList);
         fragment.setArguments(args);
         return fragment;
     }
