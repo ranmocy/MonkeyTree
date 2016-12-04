@@ -1,5 +1,6 @@
 package me.ranmocy.monkeytree;
 
+import android.provider.ContactsContract;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -47,6 +48,14 @@ final class ContactSelectRecyclerViewAdapter
         holder.phoneticGivenNameView.setText(holder.contact.phoneticGivenName);
         holder.phoneticMiddleNameView.setText(holder.contact.phoneticMiddleName);
         holder.phoneticFamilyNameView.setText(holder.contact.phoneticFamilyName);
+
+        if (ContactsContract.PhoneticNameStyle.PINYIN == holder.contact.phoneticNameStyle) {
+            // Swap first name and family name order
+            holder.familyNameView.setText(holder.contact.givenName);
+            holder.givenNameView.setText(holder.contact.familyName);
+            holder.phoneticFamilyNameView.setText(holder.contact.phoneticGivenName);
+            holder.phoneticGivenNameView.setText(holder.contact.phoneticFamilyName);
+        }
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
