@@ -28,6 +28,7 @@ final class ContactFixer {
     private static final String TAG = "ContactFixer";
 
     private static final Transliterator HAN_TO_PINYIN = Transliterator.getInstance("Han-Latin/Names");
+    static final Transliterator PINYIN_TO_ASCII = Transliterator.getInstance("Latin-Ascii");
 
     private Context context;
 

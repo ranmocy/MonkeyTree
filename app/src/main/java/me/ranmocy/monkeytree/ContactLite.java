@@ -91,7 +91,7 @@ final class ContactLite implements Parcelable, Comparable<ContactLite> {
     private static String getComparativeIdentifier(ContactLite contact) {
         if (contact.phoneticNameStyle == ContactsContract.PhoneticNameStyle.PINYIN) {
             if (!TextUtils.isEmpty(contact.phoneticFamilyName)) {
-                return contact.phoneticFamilyName;
+                return ContactFixer.PINYIN_TO_ASCII.transliterate(contact.phoneticFamilyName);
             }
         } else {
             if (!TextUtils.isEmpty(contact.givenName)) {
