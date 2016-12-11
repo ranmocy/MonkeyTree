@@ -42,6 +42,7 @@ public final class InstructionFragment extends Fragment implements View.OnClickL
         View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
         rootView.findViewById(R.id.btn_fix_latin).setOnClickListener(this);
         rootView.findViewById(R.id.btn_fix_chinese).setOnClickListener(this);
+        rootView.findViewById(R.id.btn_clear_all).setOnClickListener(this);
         return rootView;
     }
 
@@ -60,6 +61,9 @@ public final class InstructionFragment extends Fragment implements View.OnClickL
                     break;
                 case R.id.btn_fix_chinese:
                     callback.onActionSelected(Action.FIX_CHINESE_CONTACTS);
+                    break;
+                case R.id.btn_clear_all:
+                    callback.onActionSelected(Action.CLEAR_ALL_CONTACTS);
                     break;
             }
         } catch (IllegalArgumentException e) {

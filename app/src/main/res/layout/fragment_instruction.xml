@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="@string/main_description"/>
+            android:text="@string/main_header"/>
 
         <Button
             android:id="@+id/btn_fix_latin"
@@ -33,6 +33,19 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="@string/btn_fix_chinese"/>
+
+        <Button
+            android:id="@+id/btn_clear_all"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/btn_clear_all"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/main_description"/>
 
     </LinearLayout>
 

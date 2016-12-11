@@ -78,6 +78,15 @@ final class ContactFixer {
         }, new ChineseNameTransliterator(), ContactsContract.PhoneticNameStyle.PINYIN);
     }
 
+    Set<ContactLite> getAllContactData() {
+        return getContactData(new ContactFilter() {
+            @Override
+            public boolean shouldKeep(ContactLite contact) {
+                return true;
+            }
+        }, new NullTransliterator(), ContactsContract.PhoneticNameStyle.UNDEFINED);
+    }
+
     private Set<ContactLite> getContactData(
             ContactFilter contactFilter, Transliterator transliterator, int phoneticNameStyle) {
         Set<ContactLite> contacts = new HashSet<>();

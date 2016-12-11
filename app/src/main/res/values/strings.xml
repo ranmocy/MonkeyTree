@@ -9,13 +9,17 @@
     <string name="btn_quit">Quit apps</string>
     <string name="latin_fixed">Latin contacts are fixed!</string>
     <string name="chinese_fixed">Chinese contacts are fixed!</string>
+    <string name="all_cleared">All contacts are cleared!</string>
     <string name="dialog_reading">Reading contacts…</string>
     <string name="dialog_fixing">Fixing contacts…</string>
 
     <!-- InstructionFragment -->
+    <string name="main_header">
+        This app is designed to let the operating system sort contacts in the right order, by
+        updating phonetic names and types of your contacts.
+    </string>
     <string name="main_description">
-        This app is designed to let operating system sort contacts in the right order, by updating
-        phonetic names and types of your contacts.
+        How this works:
 
         \n\nFor Chinese contacts: Phonetic name is Pinyin, which will be translated from the
         contact name. Phonetic type is PINYIN. So that system will use phonetic last name to
@@ -23,9 +27,14 @@
 
         \n\nFor Latin contacts: Phonetic name and type will be removed. So that system will use
         contact first name to determine the order.
+
+        \n\nClear all contacts: For Android 7.0 above, the system seems can handle Chinese name
+        correctly. You may want to try to clear phonetic data. However, the benefit of using
+        phonetic data is that they can be synced across devices and benefit all of them.
     </string>
     <string name="btn_fix_latin">Update Latin contacts</string>
     <string name="btn_fix_chinese">Update Chinese contacts</string>
+    <string name="btn_clear_all">Clear all contacts</string>
     <string name="toast_data_missing_message">Transliterator data is missing, can not process</string>
 
     <!-- ContactSelectFragment -->

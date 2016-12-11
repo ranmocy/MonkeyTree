@@ -146,6 +146,8 @@ public final class MainActivity extends AppCompatActivity
                         return contactFixer.getLatinContactData();
                     case FIX_CHINESE_CONTACTS:
                         return contactFixer.getChineseContactData();
+                    case CLEAR_ALL_CONTACTS:
+                        return contactFixer.getAllContactData();
                     default:
                         throw new RuntimeException("Unknown action:" + action);
                 }
@@ -194,6 +196,9 @@ public final class MainActivity extends AppCompatActivity
                     case FIX_CHINESE_CONTACTS:
                         contactFixer.fixContactPhonetic(contacts);
                         return R.string.chinese_fixed;
+                    case CLEAR_ALL_CONTACTS:
+                        contactFixer.fixContactPhonetic(contacts);
+                        return R.string.all_cleared;
                     default:
                         throw new RuntimeException("Unknown action:" + action);
                 }

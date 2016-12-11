@@ -5,5 +5,6 @@ package me.ranmocy.monkeytree;
  */
 enum Action {
     FIX_LATIN_CONTACTS,
-    FIX_CHINESE_CONTACTS
+    FIX_CHINESE_CONTACTS,
+    CLEAR_ALL_CONTACTS
 }
