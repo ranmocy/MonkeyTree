@@ -52,7 +52,7 @@ public class ContactFixerTest {
 
     @Before
     public void setup() {
-        transliterator = Transliterator.getInstance("Han-Latin/Names");
+        transliterator = new ContactFixer.ChineseNameTransliterator();
     }
 
     @Ignore
@@ -68,12 +68,13 @@ public class ContactFixerTest {
     public void Han2Latin_Names() throws Exception {
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, String> entry : testMap.entrySet()) {
+            String target = entry.getKey();
             String expected = entry.getValue();
-            String actual = transliterator.transliterate(entry.getKey());
+            String actual = transliterator.transliterate(target);
             if (!expected.contentEquals(actual)) {
-                builder
-                        .append("\nExpected '").append(expected).append("', ")
-                        .append("but actually '").append(actual).append("'.");
+                builder.append(String.format(
+                        "\nExpected '%s' to be '%s', but actually is '%s'.",
+                        target, expected, actual));
             }
         }
         if (builder.length() > 0) {
