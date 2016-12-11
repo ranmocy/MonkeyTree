@@ -98,9 +98,7 @@ final class ContactFixer {
                         ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
                         ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME,
                         ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME,
-                        ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME,
-                        ContactsContract.CommonDataKinds.StructuredName.PHONETIC_GIVEN_NAME,
-                        ContactsContract.CommonDataKinds.StructuredName.PHONETIC_FAMILY_NAME},
+                        ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME},
                 String.format("(%s = ?) AND (%s NOT NULL)",
                         ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME),
                 new String[]{ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE} /*select args*/,
@@ -205,6 +203,7 @@ final class ContactFixer {
             map.put("缪", "miào");
             map.put("朴", "piáo");
             map.put("么", "yāo");
+            map.put("肖", "xiāo");
             return map;
         }
 

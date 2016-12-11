@@ -28,7 +28,7 @@ public class ContactFixerTest {
             .put("单", "shàn")
             .put("任", "rén")
             .put("殷", "yīn")
-            .put("肖", "xiào")
+            .put("贾", "jiǎ")
             .put("俞", "yú")
             .put("乐", "yuè")
             .put("华", "huà")
@@ -42,10 +42,19 @@ public class ContactFixerTest {
             .put("盖", "gě")
             .put("区", "ōu")
             .put("仇", "qiú")
+            .put("秘", "bì")
+            .put("冼", "xiǎn")
+            .put("翟", "zhái")
+            .put("晟", "chéng")
+            .put("繁", "pó")
+            .put("柏", "bǎi")
+            .put("万俟", "mò qí")
+            .put("尉迟", "yù chí")
             .put("阚", "kàn")
             .put("缪", "miào")
             .put("朴", "piáo")
             .put("么", "yāo")
+            .put("肖", "xiāo")
             .build();
 
     private Transliterator transliterator;
