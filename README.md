@@ -10,13 +10,13 @@ For Chinese contacts: Phonetic name is Pinyin, which will be translated from the
 
 For Latin contacts: Phonetic name and type will be removed. So that system will use contact first name to determine the order.
 
-該應用程序通過更新聯繫人的拼音名，從而讓操作系統可以正確排序聯繫人。
+该应用程序通过更新联系人的拼音名，从而让操作系统可以正确排序联系人。
 
-對於中文名聯繫人，拼音名將會根據聯繫人姓名而生成。拼音類型將會標注為 PINYIN。系統將會使用姓氏的拼音進行排序。
+对于中文名联系人，拼音名将会根据联系人姓名而生成。拼音类型将会标注为 PINYIN。系统将会使用姓氏的拼音进行排序。
 
-對於拉丁名聯繫人，拼音名和類型將會被移除。系統會使用聯繫人名字進行排序。
+对于拉丁名联系人，拼音名和类型将会被移除。系统会使用联系人名字进行排序。
 
-如有任何問題，可以在 Github 上發 issue。
+如有任何问题，请在 Github 上发 issue。
 
 ## Screenshots
 
@@ -34,7 +34,7 @@ For Latin contacts: Phonetic name and type will be removed. So that system will 
 
 # Changelog
 
-* v1.1: Enhance transforming for multi-pinyin chinese characters. Add button to clear all phonetic data.
+* v1.1: Enhance transforming of polyphonic Chinese characters. Add button to clear all phonetic data.
 * v1.0: Update icon. Add scrolling to instruction screen.
 
 ## Privacy
