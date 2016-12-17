@@ -3,13 +3,13 @@
 
     <!-- MainActivity -->
     <string name="dialog_permission_message">
-        We are going to fix contacts, so we need contact permissions, rig\ht?
+        We are going to fix contacts, so we need contact permissions, right?
     </string>
     <string name="btn_retry">Grant permissions</string>
     <string name="btn_quit">Quit apps</string>
-    <string name="latin_fixed">Latin contacts are fixed!</string>
-    <string name="chinese_fixed">Chinese contacts are fixed!</string>
-    <string name="all_cleared">All contacts are cleared!</string>
+    <string name="latin_fixed">Latin contacts are updated!</string>
+    <string name="chinese_fixed">Chinese contacts are updated!</string>
+    <string name="all_cleared">All phonetic data are cleared!</string>
     <string name="dialog_reading">Reading contacts…</string>
     <string name="dialog_fixing">Fixing contacts…</string>
 
@@ -21,27 +21,29 @@
     <string name="main_description">
         How this works:
 
-        \n\nFor Chinese contacts: Phonetic name is Pinyin, which will be translated from the
+        \n\Update for Chinese contacts: Phonetic name is Pinyin, which will be translated from the
         contact name. Phonetic type is PINYIN. So that system will use phonetic last name to
         determine the order.
 
-        \n\nFor Latin contacts: Phonetic name and type will be removed. So that system will use
-        contact first name to determine the order.
+        \n\nUpdate for Latin contacts: Phonetic name and type will be removed. So that system will
+        use contact first name to determine the order.
 
-        \n\nClear all contacts: For Android 7.0 above, the system seems can handle Chinese name
+        \n\Remove all phonetic data: For Android 7.0 above, the system seems can handle Chinese name
         correctly. You may want to try to clear phonetic data. However, the benefit of using
         phonetic data is that they can be synced across devices and benefit all of them.
     </string>
-    <string name="btn_fix_latin">Update Latin contacts</string>
-    <string name="btn_fix_chinese">Update Chinese contacts</string>
-    <string name="btn_clear_all">Clear all contacts</string>
-    <string name="toast_data_missing_message">Transliterator data is missing, can not process</string>
+    <string name="btn_fix_latin">Update for Latin contacts</string>
+    <string name="btn_fix_chinese">Update for Chinese contacts</string>
+    <string name="btn_clear_all">Remove all phonetic data</string>
+    <string name="toast_data_missing_message">
+        Transliterator data is missing, can not process
+    </string>
 
     <!-- ContactSelectFragment -->
-    <string name="btn_confirm">Update these contacts</string>
+    <string name="btn_confirm">Update selected contacts</string>
     <string name="contact_divider"><![CDATA[=>]]></string>
     <string name="contact_list_description">
-        This is the preview of phonetic names of the corresponding contact. Select all contacts
-        whose phonetic name need to be updated.
+        This is the preview of phonetic names of the corresponding contact. Please select all
+        contacts whose phonetic name need to be updated.
     </string>
 </resources>
