@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MainActivity -->
+    <string name="dialog_permission_message">
+        我们将要修复联系人信息，所以我们需要联系人权限。对吧？
+    </string>
+    <string name="btn_retry">准予权限</string>
+    <string name="btn_quit">退出应用</string>
+    <string name="latin_fixed">拉丁联系人已更新！</string>
+    <string name="chinese_fixed">中文联系人已更新！</string>
+    <string name="all_cleared">所有发音数据已清除！</string>
+    <string name="dialog_reading">读取联系人中……</string>
+    <string name="dialog_fixing">修复联系人中……</string>
+
+    <!-- InstructionFragment -->
+    <string name="main_header">
+        本应用通过更新联系人的发音数据，来使得操作系统可以正确排序联系人。
+    </string>
+    <!-- Note: string 断行会自动添加一个空格 -->
+    <string name="main_description">
+        工作原理：
+
+        \n\n更新中文联系人：联系人名字的发音数据是从联系人的中文名字转换而来。发音类型是 PINYIN。系统会使用姓氏的发音数据来进行排序。
+
+        \n\n更新拉丁联系人：发音数据将会被移除。系统会使用联系人的名字来进行排序。
+
+        \n\n清除全部发音数据：Android 7.0 及以上可能修复了中文联系人的排序问题。你可以尝试清除全部联系人的发音数据。然而，添加发音数据的优点在于它们可以被同步到不同类型的设备上，有利于任何系统的联系人排序问题。
+    </string>
+    <string name="btn_fix_latin">更新拉丁联系人</string>
+    <string name="btn_fix_chinese">更新中文联系人</string>
+    <string name="btn_clear_all">清除全部发音数据</string>
+    <string name="toast_data_missing_message">
+        找不到转换器数据，无法继续处理
+    </string>
+
+    <!-- ContactSelectFragment -->
+    <string name="btn_confirm">更新选定联系人</string>
+    <string name="contact_list_description">
+        该预览显示了联系人名字和对应的发音数据。请选定需要更新发音数据的联系人。
+    </string>
+</resources>
