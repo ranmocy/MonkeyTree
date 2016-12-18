@@ -8,16 +8,12 @@ import android.os.Build;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
-import com.ibm.icu.text.Replaceable;
 import com.ibm.icu.text.Transliterator;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -26,9 +22,6 @@ import java.util.Set;
 final class ContactFixer {
 
     private static final String TAG = "ContactFixer";
-
-    private static final Transliterator HAN_TO_PINYIN = Transliterator.getInstance("Han-Latin/Names");
-    static final Transliterator PINYIN_TO_ASCII = Transliterator.getInstance("Latin-Ascii");
 
     private Context context;
 
@@ -54,7 +47,7 @@ final class ContactFixer {
                             || ub == Character.UnicodeBlock.LATIN_1_SUPPLEMENT;
                 }
             }
-        }, new NullTransliterator(), ContactsContract.PhoneticNameStyle.UNDEFINED);
+        }, Transliterators.ANY_TO_NULL, ContactsContract.PhoneticNameStyle.UNDEFINED);
     }
 
     Set<ContactLite> getChineseContactData() {
@@ -75,7 +68,7 @@ final class ContactFixer {
                             || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS_SUPPLEMENT;
                 }
             }
-        }, new ChineseNameTransliterator(), ContactsContract.PhoneticNameStyle.PINYIN);
+        }, Transliterators.HAN_TO_PINYIN_NAME, ContactsContract.PhoneticNameStyle.PINYIN);
     }
 
     /** Get all contacts whose phonetic data will be removed. */
@@ -85,7 +78,7 @@ final class ContactFixer {
             public boolean shouldKeep(ContactLite contact) {
                 return true;
             }
-        }, new NullTransliterator(), ContactsContract.PhoneticNameStyle.UNDEFINED);
+        }, Transliterators.ANY_TO_NULL, ContactsContract.PhoneticNameStyle.UNDEFINED);
     }
 
     private Set<ContactLite> getContactData(
@@ -173,55 +166,4 @@ final class ContactFixer {
         boolean shouldKeep(ContactLite contact);
     }
 
-    /**
-     * NullTransliterator will change any string into empty string.
-     */
-    private static final class NullTransliterator extends Transliterator {
-
-        private NullTransliterator() {
-            super("Any-Null", null /*filter*/);
-        }
-
-        @Override
-        protected void handleTransliterate(Replaceable text, Position pos, boolean incremental) {
-            text.replace(pos.start, pos.limit, "");
-            pos.start = text.length();
-            pos.limit = text.length();
-        }
-    }
-
-    /**
-     * A {@link Transliterator} wrapper of "Han-Latin/Names" with enhancement of Chinese names.
-     */
-    @VisibleForTesting
-    static final class ChineseNameTransliterator extends Transliterator {
-
-        private static final Map<String, String> ENHANCEMENTS = getEnhancements();
-
-        private static Map<String, String> getEnhancements() {
-            HashMap<String, String> map = new HashMap<>();
-            map.put("阚", "kàn");
-            map.put("缪", "miào");
-            map.put("朴", "piáo");
-            map.put("么", "yāo");
-            map.put("肖", "xiāo");
-            return map;
-        }
-
-        ChineseNameTransliterator() {
-            super("Han-Latin/NamesEnhanced", Transliterator.getInstance("Han-Latin/Names").getFilter());
-        }
-
-        @Override
-        protected void handleTransliterate(Replaceable text, Position pos, boolean incremental) {
-            String source = text.toString();
-            String target = ENHANCEMENTS.containsKey(source)
-                    ? ENHANCEMENTS.get(source)
-                    : HAN_TO_PINYIN.transliterate(source);
-
-            text.replace(pos.start, pos.limit, target);
-            pos.start = text.length();
-            pos.limit = text.length();
-        }
-    }
 }

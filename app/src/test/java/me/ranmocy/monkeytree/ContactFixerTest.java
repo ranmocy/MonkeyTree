@@ -3,7 +3,6 @@ package me.ranmocy.monkeytree;
 import com.google.common.collect.ImmutableMap;
 import com.ibm.icu.text.Transliterator;
 
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -57,12 +56,7 @@ public class ContactFixerTest {
             .put("肖", "xiāo")
             .build();
 
-    private Transliterator transliterator;
-
-    @Before
-    public void setup() {
-        transliterator = new ContactFixer.ChineseNameTransliterator();
-    }
+    private Transliterator transliterator = Transliterators.HAN_TO_PINYIN_NAME;
 
     @Ignore
     @Test
