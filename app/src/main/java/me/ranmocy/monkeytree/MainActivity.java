@@ -142,11 +142,12 @@ public final class MainActivity extends AppCompatActivity
             @Override
             protected Set<ContactLite> doInBackground(Void... voids) {
                 switch (action) {
-                    case FIX_LATIN_CONTACTS:
-                        return contactFixer.getLatinContactData();
-                    case FIX_CHINESE_CONTACTS:
-                        return contactFixer.getChineseContactData();
-                    case CLEAR_ALL_CONTACTS:
+                    case UPDATE_ALL_DATA:
+                        // TODO: merge two methods call
+                        Set<ContactLite> contacts = contactFixer.getLatinContactData();
+                        contacts.addAll(contactFixer.getChineseContactData());
+                        return contacts;
+                    case CLEAR_ALL_DATA:
                         return contactFixer.getAllContactData();
                     default:
                         throw new RuntimeException("Unknown action:" + action);
@@ -190,13 +191,10 @@ public final class MainActivity extends AppCompatActivity
             @Override
             protected Integer doInBackground(Void... voids) {
                 switch (action) {
-                    case FIX_LATIN_CONTACTS:
+                    case UPDATE_ALL_DATA:
                         contactFixer.fixContactPhonetic(contacts);
-                        return R.string.latin_fixed;
-                    case FIX_CHINESE_CONTACTS:
-                        contactFixer.fixContactPhonetic(contacts);
-                        return R.string.chinese_fixed;
-                    case CLEAR_ALL_CONTACTS:
+                        return R.string.all_updated;
+                    case CLEAR_ALL_DATA:
                         contactFixer.fixContactPhonetic(contacts);
                         return R.string.all_cleared;
                     default:

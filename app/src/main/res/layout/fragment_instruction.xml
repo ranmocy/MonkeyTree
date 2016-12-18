@@ -21,18 +21,11 @@
             android:text="@string/main_header"/>
 
         <Button
-            android:id="@+id/btn_fix_latin"
+            android:id="@+id/btn_update_all"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="@string/btn_fix_latin"/>
-
-        <Button
-            android:id="@+id/btn_fix_chinese"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/btn_fix_chinese"/>
+            android:text="@string/btn_update_all"/>
 
         <Button
             android:id="@+id/btn_clear_all"

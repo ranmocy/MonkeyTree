@@ -7,8 +7,7 @@
     </string>
     <string name="btn_retry">Grant permissions</string>
     <string name="btn_quit">Quit apps</string>
-    <string name="latin_fixed">Latin contacts are updated!</string>
-    <string name="chinese_fixed">Chinese contacts are updated!</string>
+    <string name="all_updated">All phonetic data are updated!</string>
     <string name="all_cleared">All phonetic data are cleared!</string>
     <string name="dialog_reading">Reading contacts…</string>
     <string name="dialog_fixing">Fixing contacts…</string>
@@ -32,8 +31,7 @@
         correctly. You may want to try to clear phonetic data. However, the benefit of using
         phonetic data is that they can be synced across devices and benefit all of them.
     </string>
-    <string name="btn_fix_latin">Update for Latin contacts</string>
-    <string name="btn_fix_chinese">Update for Chinese contacts</string>
+    <string name="btn_update_all">Update all phonetic data</string>
     <string name="btn_clear_all">Remove all phonetic data</string>
     <string name="toast_data_missing_message">
         Transliterator data is missing, can not process

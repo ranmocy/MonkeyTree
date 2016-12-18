@@ -40,8 +40,7 @@ public final class InstructionFragment extends Fragment implements View.OnClickL
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
-        rootView.findViewById(R.id.btn_fix_latin).setOnClickListener(this);
-        rootView.findViewById(R.id.btn_fix_chinese).setOnClickListener(this);
+        rootView.findViewById(R.id.btn_update_all).setOnClickListener(this);
         rootView.findViewById(R.id.btn_clear_all).setOnClickListener(this);
         return rootView;
     }
@@ -56,14 +55,11 @@ public final class InstructionFragment extends Fragment implements View.OnClickL
     public void onClick(View v) {
         try {
             switch (v.getId()) {
-                case R.id.btn_fix_latin:
-                    callback.onActionSelected(Action.FIX_LATIN_CONTACTS);
-                    break;
-                case R.id.btn_fix_chinese:
-                    callback.onActionSelected(Action.FIX_CHINESE_CONTACTS);
+                case R.id.btn_update_all:
+                    callback.onActionSelected(Action.UPDATE_ALL_DATA);
                     break;
                 case R.id.btn_clear_all:
-                    callback.onActionSelected(Action.CLEAR_ALL_CONTACTS);
+                    callback.onActionSelected(Action.CLEAR_ALL_DATA);
                     break;
             }
         } catch (IllegalArgumentException e) {

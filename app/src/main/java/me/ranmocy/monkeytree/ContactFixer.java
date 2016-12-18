@@ -78,6 +78,7 @@ final class ContactFixer {
         }, new ChineseNameTransliterator(), ContactsContract.PhoneticNameStyle.PINYIN);
     }
 
+    /** Get all contacts whose phonetic data will be removed. */
     Set<ContactLite> getAllContactData() {
         return getContactData(new ContactFilter() {
             @Override

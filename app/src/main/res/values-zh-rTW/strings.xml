@@ -6,8 +6,7 @@
     </string>
     <string name="btn_retry">准予權限</string>
     <string name="btn_quit">退出應用</string>
-    <string name="latin_fixed">拉丁聯繫人已更新！</string>
-    <string name="chinese_fixed">中文聯繫人已更新！</string>
+    <string name="all_updated">所有發音數據已更新！</string>
     <string name="all_cleared">所有發音數據已清除！</string>
     <string name="dialog_reading">讀取聯繫人中……</string>
     <string name="dialog_fixing">修復聯繫人中……</string>
@@ -26,8 +25,7 @@
 
         \n\n清除全部發音數據：Android 7.0 及以上可能修復了中文聯繫人的排序問題。你可以嘗試清除全部聯繫人的發音數據。然而，添加發音數據的優點在於它們可以被同步到不同類型的設備上，有利於任何系統的聯繫人排序問題。
     </string>
-    <string name="btn_fix_latin">更新拉丁聯繫人</string>
-    <string name="btn_fix_chinese">更新中文聯繫人</string>
+    <string name="btn_update_all">更新全部發音數據</string>
     <string name="btn_clear_all">清除全部發音數據</string>
     <string name="toast_data_missing_message">
         找不到轉換器數據，無法繼續處理
