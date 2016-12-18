@@ -29,11 +29,51 @@ final class ContactFixer {
         this.context = context;
     }
 
-    Set<ContactLite> getLatinContactData() {
-        return getContactData(new ContactFilter() {
+    Set<ContactLite> getAllContactsToUpdate() {
+        return getContactData(new ContactTransistor() {
+            @Nullable
             @Override
-            public boolean shouldKeep(ContactLite contact) {
-                int codePoint = contact.displayName.codePointAt(0);
+            public ContactLite translate(
+                    int dataId,
+                    String displayName, String givenName, String middleName, String familyName,
+                    String phoneticName, String phoneticGivenName, String phoneticMiddleName, String phoneticFamilyName) {
+
+                Transliterator transliterator;
+                int style;
+                if (isLatin(displayName)) {
+                    transliterator = Transliterators.ANY_TO_NULL;
+                    style = ContactsContract.PhoneticNameStyle.UNDEFINED;
+                } else if (isChinese(displayName)) {
+                    transliterator = Transliterators.HAN_TO_PINYIN_NAME;
+                    style = ContactsContract.PhoneticNameStyle.PINYIN;
+                } else {
+                    Log.w(TAG, "Unknown contact type:" + displayName);
+                    return null;
+                }
+
+                String newPhoneticName = transliterate(transliterator, displayName);
+                String newPhoneticGivenName = transliterate(transliterator, givenName);
+                String newPhoneticMiddleName = transliterate(transliterator, middleName);
+                String newPhoneticFamilyName = transliterate(transliterator, familyName);
+
+                // if nothing changed, do not display
+                if (equalName(phoneticName, newPhoneticName)
+                        && equalName(phoneticGivenName, newPhoneticGivenName)
+                        && equalName(phoneticMiddleName, newPhoneticMiddleName)
+                        && equalName(phoneticFamilyName, newPhoneticFamilyName)) {
+                    return null;
+                }
+                return new ContactLite(dataId, displayName, givenName, middleName, familyName,
+                        newPhoneticName, newPhoneticGivenName, newPhoneticMiddleName, newPhoneticFamilyName,
+                        style);
+            }
+
+            private boolean equalName(String a, String b) {
+                return a != null && a.equals(b);
+            }
+
+            private boolean isLatin(String displayName) {
+                int codePoint = displayName.codePointAt(0);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     return Character.UnicodeScript.of(codePoint) == Character.UnicodeScript.LATIN;
                 } else {
@@ -47,14 +87,9 @@ final class ContactFixer {
                             || ub == Character.UnicodeBlock.LATIN_1_SUPPLEMENT;
                 }
             }
-        }, Transliterators.ANY_TO_NULL, ContactsContract.PhoneticNameStyle.UNDEFINED);
-    }
 
-    Set<ContactLite> getChineseContactData() {
-        return getContactData(new ContactFilter() {
-            @Override
-            public boolean shouldKeep(ContactLite contact) {
-                int codePoint = contact.displayName.codePointAt(0);
+            private boolean isChinese(String displayName) {
+                int codePoint = displayName.codePointAt(0);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     return Character.UnicodeScript.of(codePoint) == Character.UnicodeScript.HAN;
                 } else {
@@ -68,21 +103,29 @@ final class ContactFixer {
                             || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS_SUPPLEMENT;
                 }
             }
-        }, Transliterators.HAN_TO_PINYIN_NAME, ContactsContract.PhoneticNameStyle.PINYIN);
+        });
     }
 
-    /** Get all contacts whose phonetic data will be removed. */
-    Set<ContactLite> getAllContactData() {
-        return getContactData(new ContactFilter() {
+    /**
+     * Get all contacts whose phonetic data will be removed.
+     */
+    Set<ContactLite> getAllContactsToClear() {
+        return getContactData(new ContactTransistor() {
+            @Nullable
             @Override
-            public boolean shouldKeep(ContactLite contact) {
-                return true;
+            public ContactLite translate(
+                    int dataId,
+                    String displayName, String givenName, String middleName, String familyName,
+                    String phoneticName, String phoneticGivenName, String phoneticMiddleName, String phoneticFamilyName) {
+                return new ContactLite(
+                        dataId, displayName, givenName, middleName, familyName,
+                        null, null, null, null,
+                        ContactsContract.PhoneticNameStyle.UNDEFINED);
             }
-        }, Transliterators.ANY_TO_NULL, ContactsContract.PhoneticNameStyle.UNDEFINED);
+        });
     }
 
-    private Set<ContactLite> getContactData(
-            ContactFilter contactFilter, Transliterator transliterator, int phoneticNameStyle) {
+    private Set<ContactLite> getContactData(ContactTransistor contactTransliterator) {
         Set<ContactLite> contacts = new HashSet<>();
         Cursor cursor = context.getContentResolver().query(
                 ContactsContract.Data.CONTENT_URI,
@@ -92,7 +135,11 @@ final class ContactFixer {
                         ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
                         ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME,
                         ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME,
-                        ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME},
+                        ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME,
+                        ContactsContract.CommonDataKinds.StructuredName.PHONETIC_NAME,
+                        ContactsContract.CommonDataKinds.StructuredName.PHONETIC_GIVEN_NAME,
+                        ContactsContract.CommonDataKinds.StructuredName.PHONETIC_MIDDLE_NAME,
+                        ContactsContract.CommonDataKinds.StructuredName.PHONETIC_FAMILY_NAME},
                 String.format("(%s = ?) AND (%s NOT NULL)",
                         ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME),
                 new String[]{ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE} /*select args*/,
@@ -106,15 +153,15 @@ final class ContactFixer {
                     String givenName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
                     String middleName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME));
                     String familyName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
+                    String phoneticName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.PHONETIC_NAME));
+                    String phoneticGivenName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.PHONETIC_GIVEN_NAME));
+                    String phoneticMiddleName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.PHONETIC_MIDDLE_NAME));
+                    String phoneticFamilyName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.PHONETIC_FAMILY_NAME));
 
-                    String phoneticGivenName = transliterate(transliterator, givenName);
-                    String phoneticMiddleName = transliterate(transliterator, middleName);
-                    String phoneticFamilyName = transliterate(transliterator, familyName);
-
-                    ContactLite contactLite = new ContactLite(
-                            dataId, displayName, givenName, middleName, familyName,
-                            phoneticGivenName, phoneticMiddleName, phoneticFamilyName, phoneticNameStyle);
-                    if (contactFilter.shouldKeep(contactLite)) {
+                    ContactLite contactLite = contactTransliterator.translate(dataId,
+                            displayName, givenName, middleName, familyName,
+                            phoneticName, phoneticGivenName, phoneticMiddleName, phoneticFamilyName);
+                    if (contactLite != null) {
                         contacts.add(contactLite);
                     }
                 }
@@ -162,8 +209,11 @@ final class ContactFixer {
         return result;
     }
 
-    private interface ContactFilter {
-        boolean shouldKeep(ContactLite contact);
+    private interface ContactTransistor {
+        @Nullable
+        ContactLite translate(
+                int dataId,
+                String displayName, String givenName, String middleName, String familyName,
+                String phoneticName, String phoneticGivenName, String phoneticMiddleName, String phoneticFamilyName);
     }
-
 }

@@ -143,12 +143,9 @@ public final class MainActivity extends AppCompatActivity
             protected Set<ContactLite> doInBackground(Void... voids) {
                 switch (action) {
                     case UPDATE_ALL_DATA:
-                        // TODO: merge two methods call
-                        Set<ContactLite> contacts = contactFixer.getLatinContactData();
-                        contacts.addAll(contactFixer.getChineseContactData());
-                        return contacts;
+                        return contactFixer.getAllContactsToUpdate();
                     case CLEAR_ALL_DATA:
-                        return contactFixer.getAllContactData();
+                        return contactFixer.getAllContactsToClear();
                     default:
                         throw new RuntimeException("Unknown action:" + action);
                 }
