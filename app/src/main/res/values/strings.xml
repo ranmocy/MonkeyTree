@@ -41,7 +41,7 @@
     <string name="btn_confirm">Update selected contacts</string>
     <string name="contact_divider" translatable="false"><![CDATA[=>]]></string>
     <string name="contact_list_description">
-        This is the preview of phonetic names of the corresponding contact. Please select all
-        contacts whose phonetic name need to be updated.
+        This is the preview of phonetic names that need to be updated. Please select all contacts
+        you want to update.
     </string>
 </resources>

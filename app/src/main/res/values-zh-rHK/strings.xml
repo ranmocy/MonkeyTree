@@ -34,6 +34,6 @@
     <!-- ContactSelectFragment -->
     <string name="btn_confirm">更新選定聯繫人</string>
     <string name="contact_list_description">
-        該預覽顯示了聯繫人名字和對應的發音數據。請選定需要更新發音數據的聯繫人。
+        該預覽顯示了所有需要更新的發音數據。請選定需要更新的聯繫人。 
     </string>
 </resources>
