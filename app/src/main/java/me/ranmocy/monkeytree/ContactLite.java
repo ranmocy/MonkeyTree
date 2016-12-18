@@ -16,7 +16,6 @@ final class ContactLite implements Parcelable, Comparable<ContactLite> {
     final String givenName;
     final String middleName;
     final String familyName;
-    final String phoneticName;
     final String phoneticGivenName;
     final String phoneticMiddleName;
     final String phoneticFamilyName;
@@ -27,7 +26,6 @@ final class ContactLite implements Parcelable, Comparable<ContactLite> {
                 String givenName,
                 String middleName,
                 String familyName,
-                String phoneticName,
                 String phoneticGivenName,
                 String phoneticMiddleName,
                 String phoneticFamilyName,
@@ -37,7 +35,6 @@ final class ContactLite implements Parcelable, Comparable<ContactLite> {
         this.givenName = givenName;
         this.middleName = middleName;
         this.familyName = familyName;
-        this.phoneticName = phoneticName;
         this.phoneticGivenName = phoneticGivenName;
         this.phoneticMiddleName = phoneticMiddleName;
         this.phoneticFamilyName = phoneticFamilyName;
@@ -50,7 +47,6 @@ final class ContactLite implements Parcelable, Comparable<ContactLite> {
         this.givenName = in.readString();
         this.middleName = in.readString();
         this.familyName = in.readString();
-        this.phoneticName = in.readString();
         this.phoneticGivenName = in.readString();
         this.phoneticMiddleName = in.readString();
         this.phoneticFamilyName = in.readString();
@@ -64,7 +60,6 @@ final class ContactLite implements Parcelable, Comparable<ContactLite> {
         parcel.writeString(givenName);
         parcel.writeString(middleName);
         parcel.writeString(familyName);
-        parcel.writeString(phoneticName);
         parcel.writeString(phoneticGivenName);
         parcel.writeString(phoneticMiddleName);
         parcel.writeString(phoneticFamilyName);

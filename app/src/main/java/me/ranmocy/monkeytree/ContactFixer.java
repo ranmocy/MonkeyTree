@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.ibm.icu.text.Transliterator;
@@ -51,25 +52,28 @@ final class ContactFixer {
                     return null;
                 }
 
-                String newPhoneticName = transliterate(transliterator, displayName);
                 String newPhoneticGivenName = transliterate(transliterator, givenName);
                 String newPhoneticMiddleName = transliterate(transliterator, middleName);
                 String newPhoneticFamilyName = transliterate(transliterator, familyName);
 
                 // if nothing changed, do not display
-                if (equalName(phoneticName, newPhoneticName)
-                        && equalName(phoneticGivenName, newPhoneticGivenName)
+                if (equalName(phoneticGivenName, newPhoneticGivenName)
                         && equalName(phoneticMiddleName, newPhoneticMiddleName)
                         && equalName(phoneticFamilyName, newPhoneticFamilyName)) {
                     return null;
                 }
-                return new ContactLite(dataId, displayName, givenName, middleName, familyName,
-                        newPhoneticName, newPhoneticGivenName, newPhoneticMiddleName, newPhoneticFamilyName,
+                Log.d(TAG, String.format("diff: %s[%s|%s|%s] => [%s|%s|%s]",
+                        phoneticName, phoneticGivenName, phoneticMiddleName, phoneticFamilyName,
+                        newPhoneticGivenName, newPhoneticMiddleName, newPhoneticFamilyName));
+                return new ContactLite(
+                        dataId,
+                        displayName, givenName, middleName, familyName,
+                        newPhoneticGivenName, newPhoneticMiddleName, newPhoneticFamilyName,
                         style);
             }
 
             private boolean equalName(String a, String b) {
-                return a != null && a.equals(b);
+                return ((a == null) && (b == null)) || TextUtils.equals(a, b);
             }
 
             private boolean isLatin(String displayName) {
@@ -118,8 +122,9 @@ final class ContactFixer {
                     String displayName, String givenName, String middleName, String familyName,
                     String phoneticName, String phoneticGivenName, String phoneticMiddleName, String phoneticFamilyName) {
                 return new ContactLite(
-                        dataId, displayName, givenName, middleName, familyName,
-                        null, null, null, null,
+                        dataId,
+                        displayName, givenName, middleName, familyName,
+                        null, null, null,
                         ContactsContract.PhoneticNameStyle.UNDEFINED);
             }
         });
