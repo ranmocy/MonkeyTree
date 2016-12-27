@@ -3,6 +3,7 @@ package me.ranmocy.monkeytree;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +30,7 @@ public final class ContactSelectFragment extends Fragment {
     private static final String ARG_CONTACTS = "arg_contacts";
 
     public interface OnContactsConfirmed {
-        void onContactsConfirmed(Action action, Set<ContactLite> contacts);
+        void onContactsConfirmed(@Nullable Action action, @Nullable Set<ContactLite> contacts);
     }
 
     public static ContactSelectFragment create(Action action, Set<ContactLite> contacts) {
@@ -61,16 +64,30 @@ public final class ContactSelectFragment extends Fragment {
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_contact_select_list, container, false);
+        Button confirmBtn = (Button) rootView.findViewById(R.id.btn_confirm);
 
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_contact_list);
-        recyclerView.setAdapter(adapter);
+        if (adapter.getItemCount() > 0) {
+            RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_contact_list);
+            recyclerView.setAdapter(adapter);
 
-        rootView.findViewById(R.id.btn_confirm).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                callback.onContactsConfirmed(action, adapter.getSelectedContacts());
-            }
-        });
+            confirmBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    callback.onContactsConfirmed(action, adapter.getSelectedContacts());
+                }
+            });
+        } else {
+            TextView descriptionView = (TextView) rootView.findViewById(R.id.contact_list_description);
+            descriptionView.setText(R.string.contact_list_empty);
+
+            confirmBtn.setText(R.string.btn_done);
+            confirmBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    callback.onContactsConfirmed(null, null);
+                }
+            });
+        }
         return rootView;
     }
 

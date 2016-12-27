@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -176,7 +177,14 @@ public final class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onContactsConfirmed(final Action action, final Set<ContactLite> contacts) {
+    public void onContactsConfirmed(@Nullable final Action action, @Nullable final Set<ContactLite> contacts) {
+        if (action == null || contacts == null) {
+            Log.i(TAG, "Empty action, done.");
+            while (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                getSupportFragmentManager().popBackStackImmediate();
+            }
+            return;
+        }
         Log.i(TAG, String.format("Confirmed to fix %d contacts", contacts.size()));
 
         final AlertDialog alertDialog = new AlertDialog.Builder(this)

@@ -10,6 +10,7 @@
     tools:context="me.ranmocy.monkeytree.ContactSelectFragment">
 
     <TextView
+        android:id="@+id/contact_list_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

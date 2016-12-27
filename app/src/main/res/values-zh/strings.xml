@@ -13,7 +13,7 @@
 
     <!-- InstructionFragment -->
     <string name="main_header">
-        本应用通过更新联系人的发音数据，来使得操作系统可以正确排序联系人。
+        本应用通过更新联系人的发音数据，来使得操作系统可以正确排序联系人
     </string>
     <!-- Note: string 断行会自动添加一个空格 -->
     <string name="main_description">
@@ -32,8 +32,12 @@
     </string>
 
     <!-- ContactSelectFragment -->
-    <string name="btn_confirm">更新选定联系人</string>
     <string name="contact_list_description">
-        该预览显示了所有需要更新的发音数据。请选定需要更新的联系人。
+        该预览显示了所有需要更新的发音数据。请选定需要更新的联系人
     </string>
+    <string name="contact_list_empty">
+        全部发音数据已是最新
+    </string>
+    <string name="btn_confirm">更新选定联系人</string>
+    <string name="btn_done">完成</string>
 </resources>
