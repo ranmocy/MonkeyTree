@@ -52,16 +52,34 @@ public final class InstructionFragment extends Fragment implements View.OnClickL
             final SwitchCompat monitoringSwitch = (SwitchCompat) rootView.findViewById(R.id.switch_monitoring);
             final SwitchCompat backgroundSwitch = (SwitchCompat) rootView.findViewById(R.id.switch_background);
 
+            boolean monitoringEnabled = SharedPreferencesUtil.getMonitoringEnabled(getContext());
+            monitoringSwitch.setChecked(monitoringEnabled);
+            backgroundSwitch.setEnabled(monitoringEnabled);
+            if (monitoringEnabled) {
+                MonkeyService.scheduleJob(getContext());
+            } else {
+                MonkeyService.cancelJob(getContext());
+            }
+
+            boolean autoUpdateEnabled = SharedPreferencesUtil.getAutoUpdateEnabled(getContext());
+            backgroundSwitch.setChecked(autoUpdateEnabled);
+
             monitoringSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    SharedPreferencesUtil.setKeyMonitoring(getContext(), isChecked);
                     backgroundSwitch.setEnabled(isChecked);
+                    if (isChecked) {
+                        MonkeyService.scheduleJob(getContext());
+                    } else {
+                        MonkeyService.cancelJob(getContext());
+                    }
                 }
             });
             backgroundSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                    SharedPreferencesUtil.setAutoUpdateEnabled(getContext(), isChecked);
                 }
             });
         }
