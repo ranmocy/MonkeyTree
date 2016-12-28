@@ -2,12 +2,15 @@ package me.ranmocy.monkeytree;
 
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 
@@ -42,6 +45,27 @@ public final class InstructionFragment extends Fragment implements View.OnClickL
         View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
         rootView.findViewById(R.id.btn_update_all).setOnClickListener(this);
         rootView.findViewById(R.id.btn_clear_all).setOnClickListener(this);
+
+        // job that depends on contact changes requires sdk 24
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            rootView.findViewById(R.id.monitoring_container).setVisibility(View.VISIBLE);
+            final SwitchCompat monitoringSwitch = (SwitchCompat) rootView.findViewById(R.id.switch_monitoring);
+            final SwitchCompat backgroundSwitch = (SwitchCompat) rootView.findViewById(R.id.switch_background);
+
+            monitoringSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    backgroundSwitch.setEnabled(isChecked);
+                }
+            });
+            backgroundSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                }
+            });
+        }
+
         return rootView;
     }
 

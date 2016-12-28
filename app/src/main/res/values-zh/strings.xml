@@ -11,6 +11,7 @@
     <string name="dialog_reading">读取联系人中……</string>
     <string name="dialog_fixing">修复联系人中……</string>
 
+
     <!-- InstructionFragment -->
     <string name="main_header">
         本应用通过更新联系人的发音数据，来使得操作系统可以正确排序联系人
@@ -30,6 +31,13 @@
     <string name="toast_data_missing_message">
         找不到转换器数据，无法继续处理
     </string>
+
+    <string name="job_description">
+        开启后台监听联系人数据更新。并选择自动更新发音数据，或是只是通知提醒。注意，只有当联系人数据更新的时候才会触发后台任务，否则不会对电量有影响。
+    </string>
+    <string name="switch_monitoring">开启监听数据更新</string>
+    <string name="switch_background">自动更新发音数据</string>
+
 
     <!-- ContactSelectFragment -->
     <string name="contact_list_description">

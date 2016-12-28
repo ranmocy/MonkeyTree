@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Monkey Tree</string>
 
+
     <!-- MainActivity -->
     <string name="dialog_permission_message">
         We are going to fix contacts, so we need contact permissions, right?
@@ -11,6 +12,7 @@
     <string name="all_cleared">All phonetic data are cleared!</string>
     <string name="dialog_reading">Reading contacts…</string>
     <string name="dialog_fixing">Fixing contacts…</string>
+
 
     <!-- InstructionFragment -->
     <string name="main_header">
@@ -36,6 +38,15 @@
     <string name="toast_data_missing_message">
         Transliterator data is missing, can not process
     </string>
+
+    <string name="job_description">
+        Enable background listening on contacts changes. Also choose whether update phonetic data
+        automatically in the background, or just notify you with a notification. Notice that it
+        won\'t consume battery unless contacts data really changed.
+    </string>
+    <string name="switch_monitoring">Enable Listening</string>
+    <string name="switch_background">Auto Update</string>
+
 
     <!-- ContactSelectFragment -->
     <string name="contact_list_description">
