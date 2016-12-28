@@ -1,6 +1,9 @@
 package me.ranmocy.monkeytree;
 
 import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobParameters;
 import android.app.job.JobScheduler;
@@ -76,6 +79,7 @@ public final class MonkeyService extends JobService {
 
     @Override
     public boolean onStartJob(JobParameters params) {
+        Log.i(TAG, "start");
         for (Uri uri : params.getTriggeredContentUris()) {
             Log.i(TAG, String.format("uris:%s", uri));
         }
@@ -97,15 +101,29 @@ public final class MonkeyService extends JobService {
 
     private final class FixingTask extends AsyncTask<JobParameters, Void, Void> {
 
-        private ContactFixer contactFixer;
+        private final Context context;
+        private final ContactFixer contactFixer;
 
         FixingTask(Context context) {
+            this.context = context;
             this.contactFixer = new ContactFixer(context);
         }
 
         @Override
         protected Void doInBackground(JobParameters... params) {
-            contactFixer.fixContactPhonetic(contactFixer.getAllContactsToUpdate());
+            if (SharedPreferencesUtil.getAutoUpdateEnabled(context)) {
+                contactFixer.fixContactPhonetic(contactFixer.getAllContactsToUpdate());
+            } else {
+                NotificationManager nm = context.getSystemService(NotificationManager.class);
+                nm.notify(R.id.contact_changed, new Notification.Builder(context)
+                        .setContentTitle("Contact changed")
+                        .setContentIntent(PendingIntent.getActivity(
+                                context,
+                                0 /*requestCode*/,
+                                MainActivity.getActivityIntent(context),
+                                0 /*flags*/))
+                        .build());
+            }
             jobFinished(params[0], false);
             return null;
         }

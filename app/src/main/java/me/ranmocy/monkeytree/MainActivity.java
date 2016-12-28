@@ -1,13 +1,16 @@
 package me.ranmocy.monkeytree;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,10 +27,16 @@ public final class MainActivity extends AppCompatActivity
         implements InstructionFragment.OnActionSelected, ContactSelectFragment.OnContactsConfirmed {
 
     private static final String TAG = "MainActivity";
+    private static final String EXTRA_ACTION = "extra_action";
     private static final int PERMISSIONS_REQUEST = 0;
     private static final List<String> REQUIRED_PERMISSIONS = Arrays.asList(
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.WRITE_CONTACTS);
+
+    public static Intent getActivityIntent(Context context) {
+        return new Intent(context, MainActivity.class)
+                .putExtra(EXTRA_ACTION, Action.UPDATE_ALL_DATA);
+    }
 
     private ContactFixer contactFixer;
     private FirebaseAnalytics firebaseAnalytics;
@@ -129,6 +138,10 @@ public final class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(android.R.id.content, InstructionFragment.create())
                 .commit();
+        if (getIntent().hasExtra(EXTRA_ACTION)) {
+            Action action = (Action) getIntent().getSerializableExtra(EXTRA_ACTION);
+            onActionSelected(action);
+        }
         firebaseAnalytics.logEvent("initUI", Bundle.EMPTY);
     }
 
