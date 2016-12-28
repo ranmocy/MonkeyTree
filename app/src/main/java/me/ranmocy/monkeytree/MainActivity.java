@@ -33,7 +33,7 @@ public final class MainActivity extends AppCompatActivity
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.WRITE_CONTACTS);
 
-    public static Intent getActivityIntent(Context context) {
+    public static Intent getUpdateAllIntent(Context context) {
         return new Intent(context, MainActivity.class)
                 .putExtra(EXTRA_ACTION, Action.UPDATE_ALL_DATA);
     }

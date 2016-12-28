@@ -16,6 +16,8 @@ import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.util.Set;
+
 /**
  * A background service listen to contact changes and update phonetic information.
  */
@@ -111,20 +113,28 @@ public final class MonkeyService extends JobService {
 
         @Override
         protected Void doInBackground(JobParameters... params) {
-            if (SharedPreferencesUtil.getAutoUpdateEnabled(context)) {
-                contactFixer.fixContactPhonetic(contactFixer.getAllContactsToUpdate());
-            } else {
-                NotificationManager nm = context.getSystemService(NotificationManager.class);
-                nm.notify(R.id.contact_changed, new Notification.Builder(context)
-                        .setContentTitle("Contact changed")
-                        .setContentIntent(PendingIntent.getActivity(
-                                context,
-                                0 /*requestCode*/,
-                                MainActivity.getActivityIntent(context),
-                                0 /*flags*/))
-                        .build());
+            Log.i(TAG, "doInBackground");
+            Set<ContactLite> allContactsToUpdate = contactFixer.getAllContactsToUpdate();
+            if (!allContactsToUpdate.isEmpty()) {
+                if (SharedPreferencesUtil.getAutoUpdateEnabled(context)) {
+                    contactFixer.fixContactPhonetic(allContactsToUpdate);
+                } else {
+                    NotificationManager nm = context.getSystemService(NotificationManager.class);
+                    nm.notify(R.id.notification_id_contact_changed, new Notification.Builder(context)
+                            .setContentTitle(getString(R.string.notification_title))
+                            .setContentText(getString(R.string.notification_message))
+                            .setSmallIcon(R.drawable.ic_group_add_black_24dp)
+                            .setAutoCancel(true)
+                            .setContentIntent(PendingIntent.getActivity(
+                                    context,
+                                    0 /*requestCode*/,
+                                    MainActivity.getUpdateAllIntent(context),
+                                    0 /*flags*/))
+                            .build());
+                }
             }
             jobFinished(params[0], false);
+            Log.i(TAG, "done");
             return null;
         }
     }

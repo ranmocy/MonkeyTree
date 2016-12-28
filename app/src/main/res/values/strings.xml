@@ -59,4 +59,9 @@
     <string name="contact_divider" translatable="false"><![CDATA[=>]]></string>
     <string name="btn_confirm">Update selected contacts</string>
     <string name="btn_done">Done</string>
+
+
+    <!-- Background notification -->
+    <string name="notification_title">Phonetic data need update</string>
+    <string name="notification_message">Click to update phonetic data</string>
 </resources>
