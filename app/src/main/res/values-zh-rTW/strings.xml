@@ -48,4 +48,8 @@
     </string>
     <string name="btn_confirm">更新選定聯繫人</string>
     <string name="btn_done">完成</string>
+
+    <!-- Background notification -->
+    <string name="notification_title">發音數據需要更新</string>
+    <string name="notification_message">點擊更新發音數據</string>
 </resources>
