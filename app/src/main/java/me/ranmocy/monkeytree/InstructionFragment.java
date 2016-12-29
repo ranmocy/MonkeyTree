@@ -55,11 +55,7 @@ public final class InstructionFragment extends Fragment implements View.OnClickL
             boolean monitoringEnabled = SharedPreferencesUtil.getMonitoringEnabled(getContext());
             monitoringSwitch.setChecked(monitoringEnabled);
             backgroundSwitch.setEnabled(monitoringEnabled);
-            if (monitoringEnabled) {
-                MonkeyService.scheduleJob(getContext());
-            } else {
-                MonkeyService.cancelJob(getContext());
-            }
+            MonkeyService.updateJob(getContext());
 
             boolean autoUpdateEnabled = SharedPreferencesUtil.getAutoUpdateEnabled(getContext());
             backgroundSwitch.setChecked(autoUpdateEnabled);
@@ -67,13 +63,10 @@ public final class InstructionFragment extends Fragment implements View.OnClickL
             monitoringSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    SharedPreferencesUtil.setKeyMonitoring(getContext(), isChecked);
                     backgroundSwitch.setEnabled(isChecked);
-                    if (isChecked) {
-                        MonkeyService.scheduleJob(getContext());
-                    } else {
-                        MonkeyService.cancelJob(getContext());
-                    }
+                    SharedPreferencesUtil.setKeyMonitoring(getContext(), isChecked);
+                    MonkeyService.updateJob(getContext());
+
                 }
             });
             backgroundSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

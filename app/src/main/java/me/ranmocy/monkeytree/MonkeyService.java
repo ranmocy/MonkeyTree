@@ -29,15 +29,17 @@ public final class MonkeyService extends JobService {
     private static final int JOB_ID = 1;
     // private static final Uri CONTACT_URI = ContactsContract.AUTHORITY_URI;
     private static final Uri CONTACT_DATA_URI = ContactsContract.Data.CONTENT_URI;
-    private static final String[] PROJECTION = new String[]{
-            ContactsContract.Data._ID,
-            ContactsContract.Data.MIMETYPE,
-            ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
-            ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME,
-            ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME,
-            ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME};
 
-    static void scheduleJob(Context context) {
+    static void updateJob(Context context) {
+        boolean monitoringEnabled = SharedPreferencesUtil.getMonitoringEnabled(context);
+        if (monitoringEnabled) {
+            scheduleJob(context);
+        } else {
+            cancelJob(context);
+        }
+    }
+
+    private static void scheduleJob(Context context) {
         if (isScheduled(context)) {
             return;
         }
@@ -51,7 +53,7 @@ public final class MonkeyService extends JobService {
                         .build());
     }
 
-    static void cancelJob(Context context) {
+    private static void cancelJob(Context context) {
         if (!isScheduled(context)) {
             return;
         }
@@ -59,12 +61,12 @@ public final class MonkeyService extends JobService {
         getJobScheduler(context).cancel(JOB_ID);
     }
 
-    static boolean isScheduled(Context context) {
+    private static boolean isScheduled(Context context) {
         return getScheduledJob(context) != null;
     }
 
     @Nullable
-    static JobInfo getScheduledJob(Context context) {
+    private static JobInfo getScheduledJob(Context context) {
         for (JobInfo jobInfo : getJobScheduler(context).getAllPendingJobs()) {
             if (jobInfo.getId() == JOB_ID) {
                 return jobInfo;
@@ -82,8 +84,11 @@ public final class MonkeyService extends JobService {
     @Override
     public boolean onStartJob(JobParameters params) {
         Log.i(TAG, "start");
+        for (String auth : params.getTriggeredContentAuthorities()) {
+            Log.i(TAG, "auth:" + auth);
+        }
         for (Uri uri : params.getTriggeredContentUris()) {
-            Log.i(TAG, String.format("uris:%s", uri));
+            Log.i(TAG, String.format("uris:%s", uri.toString()));
         }
         if (task == null || task.isCancelled()) {
             task = new FixingTask(this);
@@ -133,8 +138,11 @@ public final class MonkeyService extends JobService {
                             .build());
                 }
             }
+
             jobFinished(params[0], false);
             Log.i(TAG, "done");
+
+            updateJob(context);
             return null;
         }
     }
