@@ -2,7 +2,7 @@
     <string name="app_name" translatable="false">Monkey Tree</string>
 
 
-    <!-- MainActivity -->
+    <!-- MonkeyActivity -->
     <string name="dialog_permission_message">
         We are going to fix contacts, so we need contact permissions, right?
     </string>

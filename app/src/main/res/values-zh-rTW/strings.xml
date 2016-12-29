@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- MainActivity -->
+    <!-- MonkeyActivity -->
     <string name="dialog_permission_message">
         我們將要修復聯繫人信息，所以我們需要聯繫人權限。對吧？
     </string>

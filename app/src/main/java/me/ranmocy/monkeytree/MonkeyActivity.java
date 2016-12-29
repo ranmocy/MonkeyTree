@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,10 +22,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-public final class MainActivity extends AppCompatActivity
+public final class MonkeyActivity extends AppCompatActivity
         implements InstructionFragment.OnActionSelected, ContactSelectFragment.OnContactsConfirmed {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "MonkeyActivity";
     private static final String EXTRA_ACTION = "extra_action";
     private static final int PERMISSIONS_REQUEST = 0;
     private static final List<String> REQUIRED_PERMISSIONS = Arrays.asList(
@@ -34,7 +33,7 @@ public final class MainActivity extends AppCompatActivity
             Manifest.permission.WRITE_CONTACTS);
 
     public static Intent getUpdateAllIntent(Context context) {
-        return new Intent(context, MainActivity.class)
+        return new Intent(context, MonkeyActivity.class)
                 .putExtra(EXTRA_ACTION, Action.UPDATE_ALL_DATA);
     }
 
@@ -225,7 +224,7 @@ public final class MainActivity extends AppCompatActivity
                 super.onPostExecute(resId);
                 Log.i(TAG, "Fixing finished");
                 alertDialog.dismiss();
-                Toast.makeText(MainActivity.this, resId, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MonkeyActivity.this, resId, Toast.LENGTH_SHORT).show();
                 while (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     getSupportFragmentManager().popBackStackImmediate();
                 }

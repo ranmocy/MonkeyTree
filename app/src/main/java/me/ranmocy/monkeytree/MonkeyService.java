@@ -127,7 +127,7 @@ public final class MonkeyService extends JobService {
                             .setContentIntent(PendingIntent.getActivity(
                                     context,
                                     0 /*requestCode*/,
-                                    MainActivity.getUpdateAllIntent(context),
+                                    MonkeyActivity.getUpdateAllIntent(context),
                                     0 /*flags*/))
                             .build());
                 }
