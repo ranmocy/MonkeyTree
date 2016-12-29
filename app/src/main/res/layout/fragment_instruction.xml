@@ -75,12 +75,12 @@
                     android:text="@string/switch_background"/>
             </RelativeLayout>
 
-        </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#444"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#444"/>
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_learn_more"
