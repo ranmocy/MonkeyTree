@@ -24,7 +24,7 @@ final class ContactFixer {
 
     private static final String TAG = "ContactFixer";
 
-    private Context context;
+    private final Context context;
 
     ContactFixer(Context context) {
         this.context = context;

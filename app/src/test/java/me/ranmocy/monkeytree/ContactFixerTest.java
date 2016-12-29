@@ -56,11 +56,11 @@ public class ContactFixerTest {
             .put("肖", "xiāo")
             .build();
 
-    private Transliterator transliterator = Transliterators.HAN_TO_PINYIN_NAME;
+    private final Transliterator transliterator = Transliterators.HAN_TO_PINYIN_NAME;
 
     @Ignore
     @Test
-    public void Han2Latin_Names_results() throws Exception {
+    public void Han2Latin_Names_results() {
         for (Map.Entry<String, String> entry : testMap.entrySet()) {
             System.out.println(String.format(".put(\"%s\", \"%s\")",
                     entry.getKey(), transliterator.transliterate(entry.getKey())));
@@ -68,7 +68,7 @@ public class ContactFixerTest {
     }
 
     @Test
-    public void Han2Latin_Names() throws Exception {
+    public void Han2Latin_Names() {
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, String> entry : testMap.entrySet()) {
             String target = entry.getKey();

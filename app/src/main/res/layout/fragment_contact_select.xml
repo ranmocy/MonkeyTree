@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/contact_name_margin"
-        android:text="@string/contact_divider" />
+        android:text="@string/contact_divider"/>
 
     <TextView
         android:id="@+id/contact_phonetic_given_name"

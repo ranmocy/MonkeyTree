@@ -37,11 +37,6 @@ public final class InstructionFragment extends Fragment implements View.OnClickL
     private AlertDialog alertDialog;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
