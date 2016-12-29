@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ public final class InstructionFragment extends Fragment implements View.OnClickL
     }
 
     private OnActionSelected callback;
+    private AlertDialog alertDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public final class InstructionFragment extends Fragment implements View.OnClickL
         View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
         rootView.findViewById(R.id.btn_update_all).setOnClickListener(this);
         rootView.findViewById(R.id.btn_clear_all).setOnClickListener(this);
+        rootView.findViewById(R.id.btn_learn_more).setOnClickListener(this);
 
         // job that depends on contact changes requires sdk 24
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -96,10 +99,25 @@ public final class InstructionFragment extends Fragment implements View.OnClickL
                 case R.id.btn_clear_all:
                     callback.onActionSelected(Action.CLEAR_ALL_DATA);
                     break;
+                case R.id.btn_learn_more:
+                    alertDialog = new AlertDialog.Builder(getContext())
+                            .setMessage(R.string.main_description)
+                            .show();
+                    break;
             }
         } catch (IllegalArgumentException e) {
             Log.w(TAG, "Transliterator data is missing");
             Toast.makeText(getActivity(), R.string.toast_data_missing_message, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+            alertDialog = null;
         }
     }
 }

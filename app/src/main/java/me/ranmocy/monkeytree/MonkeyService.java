@@ -84,12 +84,6 @@ public final class MonkeyService extends JobService {
     @Override
     public boolean onStartJob(JobParameters params) {
         Log.i(TAG, "start");
-        for (String auth : params.getTriggeredContentAuthorities()) {
-            Log.i(TAG, "auth:" + auth);
-        }
-        for (Uri uri : params.getTriggeredContentUris()) {
-            Log.i(TAG, String.format("uris:%s", uri.toString()));
-        }
         if (task == null || task.isCancelled()) {
             task = new FixingTask(this);
             task.execute(params);

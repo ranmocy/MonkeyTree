@@ -20,21 +20,24 @@
         updating phonetic names and types of your contacts.
     </string>
     <string name="main_description">
-        How this works:
+        For Chinese contacts, phonetic name is Pinyin, which will be translated from the contact
+        name. Phonetic type is PINYIN. So that system will use phonetic last name to determine the
+        order.
 
-        \n\Update for Chinese contacts: Phonetic name is Pinyin, which will be translated from the
-        contact name. Phonetic type is PINYIN. So that system will use phonetic last name to
-        determine the order.
+        \n\nFor Latin contacts, phonetic name and type will be removed. So that system will use
+        contact first name to determine the order.
 
-        \n\nUpdate for Latin contacts: Phonetic name and type will be removed. So that system will
-        use contact first name to determine the order.
-
-        \n\Remove all phonetic data: For Android 7.0 above, the system seems can handle Chinese name
+        \n\nRemove all phonetic data: For Android 7.0 above, the system seems can handle Chinese name
         correctly. You may want to try to clear phonetic data. However, the benefit of using
         phonetic data is that they can be synced across devices and benefit all of them.
+
+        \n\nBackground monitoring is a system mechanism. When contacts changed, system will trigger
+        this app\'s background task to update phonetic data or show notification. It won\'t consume
+        battery unless contacts data really changed.
     </string>
     <string name="btn_update_all">Update all phonetic data</string>
     <string name="btn_clear_all">Remove all phonetic data</string>
+    <string name="btn_learn_more">How this works</string>
     <string name="toast_data_missing_message">
         Transliterator data is missing, can not process
     </string>
