@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,8 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Set;
-
-import javax.annotation.Nonnull;
 
 /**
  * A fragment representing a list of contacts.
@@ -82,7 +81,7 @@ public final class ContactSelectFragment extends Fragment {
 
 
     @Override
-    public void onAttach(@Nonnull Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         callback = (OnContactsConfirmed) context;
     }
