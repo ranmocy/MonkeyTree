@@ -84,7 +84,7 @@ public final class MonkeyActivity extends AppCompatActivity
         Log.i(TAG, "requestPermissions");
         ActivityCompat.requestPermissions(
                 this,
-                REQUIRED_PERMISSIONS.toArray(new String[REQUIRED_PERMISSIONS.size()]),
+                REQUIRED_PERMISSIONS.toArray(new String[0]),
                 PERMISSIONS_REQUEST);
     }
 

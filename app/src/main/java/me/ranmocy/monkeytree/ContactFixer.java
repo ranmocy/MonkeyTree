@@ -4,7 +4,6 @@ import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
@@ -79,34 +78,12 @@ final class ContactFixer {
 
             private boolean isLatin(String displayName) {
                 int codePoint = displayName.codePointAt(0);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    return Character.UnicodeScript.of(codePoint) == Character.UnicodeScript.LATIN;
-                } else {
-                    Character.UnicodeBlock ub = Character.UnicodeBlock.of(codePoint);
-                    return ub == Character.UnicodeBlock.BASIC_LATIN
-                            || ub == Character.UnicodeBlock.LATIN_EXTENDED_A
-                            || ub == Character.UnicodeBlock.LATIN_EXTENDED_ADDITIONAL
-                            || ub == Character.UnicodeBlock.LATIN_EXTENDED_B
-                            || ub == Character.UnicodeBlock.LATIN_EXTENDED_C
-                            || ub == Character.UnicodeBlock.LATIN_EXTENDED_D
-                            || ub == Character.UnicodeBlock.LATIN_1_SUPPLEMENT;
-                }
+                return Character.UnicodeScript.of(codePoint) == Character.UnicodeScript.LATIN;
             }
 
             private boolean isChinese(String displayName) {
                 int codePoint = displayName.codePointAt(0);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    return Character.UnicodeScript.of(codePoint) == Character.UnicodeScript.HAN;
-                } else {
-                    Character.UnicodeBlock ub = Character.UnicodeBlock.of(codePoint);
-                    return ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
-                            || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
-                            || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_B
-                            || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_C
-                            || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_D
-                            || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
-                            || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS_SUPPLEMENT;
-                }
+                return Character.UnicodeScript.of(codePoint) == Character.UnicodeScript.HAN;
             }
         });
     }
@@ -116,7 +93,6 @@ final class ContactFixer {
      */
     Set<ContactLite> getAllContactsToClear() {
         return getContactData(new ContactTransistor() {
-            @Nullable
             @Override
             public ContactLite translate(
                     int dataId,
@@ -133,7 +109,7 @@ final class ContactFixer {
 
     private Set<ContactLite> getContactData(ContactTransistor contactTransliterator) {
         Set<ContactLite> contacts = new HashSet<>();
-        Cursor cursor = context.getContentResolver().query(
+        try (Cursor cursor = context.getContentResolver().query(
                 ContactsContract.Data.CONTENT_URI,
                 new String[]{
                         ContactsContract.Data._ID,
@@ -149,8 +125,7 @@ final class ContactFixer {
                 String.format("(%s = ?) AND (%s NOT NULL)",
                         ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME),
                 new String[]{ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE} /*select args*/,
-                null /*sort*/);
-        try {
+                null /*sort*/)) {
             if (cursor != null) {
                 Log.i(TAG, "Contact data:" + cursor.getCount());
                 while (cursor.moveToNext()) {
@@ -171,10 +146,6 @@ final class ContactFixer {
                         contacts.add(contactLite);
                     }
                 }
-            }
-        } finally {
-            if (cursor != null) {
-                cursor.close();
             }
         }
 

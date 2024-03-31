@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +33,7 @@ final class ContactSelectRecyclerViewAdapter
         }
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -58,12 +60,9 @@ final class ContactSelectRecyclerViewAdapter
             holder.phoneticGivenNameView.setText(holder.contact.phoneticFamilyName);
         }
 
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.checkBox.setSelected(!holder.checkBox.isSelected());
-                selected.put(holder.contact, holder.checkBox.isSelected());
-            }
+        holder.view.setOnClickListener(v -> {
+            holder.checkBox.setSelected(!holder.checkBox.isSelected());
+            selected.put(holder.contact, holder.checkBox.isSelected());
         });
     }
 
@@ -82,7 +81,7 @@ final class ContactSelectRecyclerViewAdapter
         return selectedContacts;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         private final View view;
         private final AppCompatCheckBox checkBox;
         private final TextView givenNameView;
@@ -96,15 +95,16 @@ final class ContactSelectRecyclerViewAdapter
         private ViewHolder(View view) {
             super(view);
             this.view = view;
-            this.checkBox = (AppCompatCheckBox) view.findViewById(R.id.contact_checkbox);
-            this.givenNameView = (TextView) view.findViewById(R.id.contact_given_name);
-            this.middleNameView = (TextView) view.findViewById(R.id.contact_middle_name);
-            this.familyNameView = (TextView) view.findViewById(R.id.contact_family_name);
-            this.phoneticGivenNameView = (TextView) view.findViewById(R.id.contact_phonetic_given_name);
-            this.phoneticMiddleNameView = (TextView) view.findViewById(R.id.contact_phonetic_middle_name);
-            this.phoneticFamilyNameView = (TextView) view.findViewById(R.id.contact_phonetic_family_name);
+            this.checkBox = view.findViewById(R.id.contact_checkbox);
+            this.givenNameView = view.findViewById(R.id.contact_given_name);
+            this.middleNameView = view.findViewById(R.id.contact_middle_name);
+            this.familyNameView = view.findViewById(R.id.contact_family_name);
+            this.phoneticGivenNameView = view.findViewById(R.id.contact_phonetic_given_name);
+            this.phoneticMiddleNameView = view.findViewById(R.id.contact_phonetic_middle_name);
+            this.phoneticFamilyNameView = view.findViewById(R.id.contact_phonetic_family_name);
         }
 
+        @NonNull
         @Override
         public String toString() {
             return super.toString() + " '" + middleNameView.getText() + "'";

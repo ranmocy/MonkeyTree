@@ -1,7 +1,7 @@
 package me.ranmocy.monkeytree;
 
-import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.job.JobInfo;
@@ -22,7 +22,6 @@ import java.util.Set;
 /**
  * A background service listen to contact changes and update phonetic information.
  */
-@TargetApi(24)
 public final class MonkeyService extends JobService {
 
     private static final String TAG = "MonkeyService";
@@ -77,7 +76,7 @@ public final class MonkeyService extends JobService {
     }
 
     private static JobScheduler getJobScheduler(Context context) {
-        return (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        return context.getSystemService(JobScheduler.class);
     }
 
     private FixingTask task;
@@ -120,17 +119,18 @@ public final class MonkeyService extends JobService {
                     contactFixer.fixContactPhonetic(allContactsToUpdate);
                 } else {
                     NotificationManager nm = context.getSystemService(NotificationManager.class);
-                    nm.notify(R.id.notification_id_contact_changed, new Notification.Builder(context)
-                            .setContentTitle(getString(R.string.notification_title))
-                            .setContentText(getString(R.string.notification_message))
-                            .setSmallIcon(R.drawable.ic_group_add_black_24dp)
-                            .setAutoCancel(true)
-                            .setContentIntent(PendingIntent.getActivity(
-                                    context,
-                                    0 /*requestCode*/,
-                                    MonkeyActivity.getUpdateAllIntent(context),
-                                    0 /*flags*/))
-                            .build());
+                    nm.notify(R.id.notification_id_contact_changed,
+                            new Notification.Builder(context, NotificationChannel.DEFAULT_CHANNEL_ID)
+                                    .setContentTitle(getString(R.string.notification_title))
+                                    .setContentText(getString(R.string.notification_message))
+                                    .setSmallIcon(R.drawable.ic_group_add_black_24dp)
+                                    .setAutoCancel(true)
+                                    .setContentIntent(PendingIntent.getActivity(
+                                            context,
+                                            0 /*requestCode*/,
+                                            MonkeyActivity.getUpdateAllIntent(context),
+                                            PendingIntent.FLAG_IMMUTABLE /*flags*/))
+                                    .build());
                 }
             }
 

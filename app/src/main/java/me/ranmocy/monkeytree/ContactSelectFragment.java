@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 /**
  * A fragment representing a list of contacts.
  * <p>
@@ -26,7 +28,7 @@ public final class ContactSelectFragment extends Fragment {
     private static final String ARG_ACTION = "arg_action";
     private static final String ARG_CONTACTS = "arg_contacts";
 
-    public interface OnContactsConfirmed {
+    interface OnContactsConfirmed {
         void onContactsConfirmed(@Nullable Action action, @Nullable Set<ContactLite> contacts);
     }
 
@@ -61,36 +63,26 @@ public final class ContactSelectFragment extends Fragment {
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_contact_select_list, container, false);
-        Button confirmBtn = (Button) rootView.findViewById(R.id.btn_confirm);
+        Button confirmBtn = rootView.findViewById(R.id.btn_confirm);
 
         if (adapter.getItemCount() > 0) {
-            RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_contact_list);
+            RecyclerView recyclerView = rootView.findViewById(R.id.fragment_contact_list);
             recyclerView.setAdapter(adapter);
 
-            confirmBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    callback.onContactsConfirmed(action, adapter.getSelectedContacts());
-                }
-            });
+            confirmBtn.setOnClickListener(view -> callback.onContactsConfirmed(action, adapter.getSelectedContacts()));
         } else {
-            TextView descriptionView = (TextView) rootView.findViewById(R.id.contact_list_description);
+            TextView descriptionView = rootView.findViewById(R.id.contact_list_description);
             descriptionView.setText(R.string.contact_list_empty);
 
             confirmBtn.setText(R.string.btn_done);
-            confirmBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    callback.onContactsConfirmed(null, null);
-                }
-            });
+            confirmBtn.setOnClickListener(view -> callback.onContactsConfirmed(null, null));
         }
         return rootView;
     }
 
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@Nonnull Context context) {
         super.onAttach(context);
         callback = (OnContactsConfirmed) context;
     }
