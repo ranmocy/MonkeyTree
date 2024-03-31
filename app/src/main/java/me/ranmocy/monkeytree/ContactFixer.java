@@ -7,9 +7,10 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import com.ibm.icu.text.Transliterator;
 

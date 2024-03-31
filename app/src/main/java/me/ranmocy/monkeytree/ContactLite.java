@@ -3,8 +3,9 @@ package me.ranmocy.monkeytree;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 /**
  * Lite version of a contact name.

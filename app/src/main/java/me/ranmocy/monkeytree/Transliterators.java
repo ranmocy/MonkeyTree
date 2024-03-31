@@ -1,6 +1,6 @@
 package me.ranmocy.monkeytree;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import com.ibm.icu.text.Replaceable;
 import com.ibm.icu.text.Transliterator;
