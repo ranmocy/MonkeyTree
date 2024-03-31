@@ -34,11 +34,15 @@ For Latin contacts: Phonetic name and type will be removed. So that system will 
 
 # Changelog
 
+* v3.0: Update Android target versions. Now the minimal Android version is Android Oreo 8.0 (SDK 26).
+* v2.0: Add support for background update/notification. Requires Android N or above. Simplify the UI.
 * v1.1: Enhance transforming of polyphonic Chinese characters. Add button to clear all phonetic data.
 * v1.0: Update icon. Add scrolling to instruction screen.
 
 ## Privacy
 
-This app requires contact permission to read and update contact information. By using this app, user allow this app to collect usage information and upload to Google server for analysis. But it would never upload any user contact information to any remote server.
+This app requires contact permission to read and update contact information.
+By using this app, user allow this app to collect usage information and upload to Google server for analysis.
+But it would never upload any user contact information to any remote server.
 
-该应用程序需要联系人权限来读取以及更新联系人信息。使用该应用程序意味着用户允许该应用程序收集以及上传使用信息。但是该应用程序永远不会将用户联系人信息上传至任何远端服务器。
+该应用程序需要联系人权限来读取以及更新联系人信息。使用该应用程序意味着用户允许该应用程序收集应用使用信息。但是该应用程序永远不会将用户联系人信息上传至任何远端服务器。
