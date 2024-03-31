@@ -5,11 +5,11 @@ android {
         release
     }
     namespace 'me.ranmocy.monkeytree'
-    compileSdkVersion 25
+    compileSdk 34
     defaultConfig {
         applicationId "me.ranmocy.monkeytree"
         minSdkVersion 11
-        targetSdkVersion 25
+        targetSdk 34
         versionCode 9
         versionName "2.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -25,6 +25,15 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_1_6
+    }
+    dependenciesInfo {
+        includeInApk false
+        includeInBundle false
+    }
+    buildToolsVersion '34.0.0'
 }
 
 dependencies {
