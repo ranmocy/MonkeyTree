@@ -6,6 +6,7 @@ import android.provider.ContactsContract;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 /**
  * Lite version of a contact name.
@@ -40,6 +41,22 @@ final class ContactLite implements Parcelable, Comparable<ContactLite> {
         this.phoneticMiddleName = phoneticMiddleName;
         this.phoneticFamilyName = phoneticFamilyName;
         this.phoneticNameStyle = phoneticNameStyle;
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    ContactLite(String displayName,
+                String givenName,
+                String middleName,
+                String familyName) {
+        this.dataId = 0;
+        this.displayName = displayName;
+        this.givenName = givenName;
+        this.middleName = middleName;
+        this.familyName = familyName;
+        this.phoneticGivenName = null;
+        this.phoneticMiddleName = null;
+        this.phoneticFamilyName = null;
+        this.phoneticNameStyle = 0;
     }
 
     private ContactLite(Parcel in) {
