@@ -34,6 +34,7 @@ For Latin contacts: Phonetic name and type will be removed. So that system will 
 
 # Changelog
 
+* v3.1: Fix the crash issue on newer Android devices.
 * v3.0: Update Android target versions. Now the minimal Android version is Android Oreo 8.0 (SDK 26).
 * v2.0: Add support for background update/notification. Requires Android N or above. Simplify the UI.
 * v1.1: Enhance transforming of polyphonic Chinese characters. Add button to clear all phonetic data.
