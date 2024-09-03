@@ -17,4 +17,4 @@
 #}
 
 # icu4j use relative path to load data files, so we need to keep this package name.
--keeppackagenames com.ibm.icu.impl
+-keep class com.ibm.icu.text.**
