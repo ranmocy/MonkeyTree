@@ -9,13 +9,13 @@ android {
         release
     }
     namespace 'me.ranmocy.monkeytree'
-    compileSdk 34
+    compileSdk 35
     defaultConfig {
         applicationId "me.ranmocy.monkeytree"
         minSdkVersion 26
         targetSdk 34
-        versionCode 12
-        versionName "3.1"
+        versionCode 13
+        versionName "3.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
